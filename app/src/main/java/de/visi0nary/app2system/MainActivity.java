@@ -1,71 +1,42 @@
 package de.visi0nary.app2system;
 
-import android.app.ListActivity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends FragmentActivity {
 
-
+    private AppPagerAdapter pagerAdapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO: implement adapter sorting logic
-        final ArrayList<String> systemAppList = new ArrayList<String>();
-        final ArrayList<String> userAppList = new ArrayList<String>();
-        // get all apps
-        final PackageManager pm = getPackageManager();
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        //initialize fragments
+        //get "root view"
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        pagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
 
-        //iterate through all apps and decide whether they're system or user apps and put them into the corresponding list
-        for(ApplicationInfo appInfo : packages) {
-            // use human readable app name instead of package name
-            if(checkIfAppIsSystemApp(appInfo))
-                    systemAppList.add(pm.getApplicationLabel(appInfo).toString());
-            else
-                    userAppList.add(pm.getApplicationLabel(appInfo).toString());
-        }
-        // add apps to adapter
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, systemAppList);
-        setListAdapter(adapter);
 
 
 
         //startSU();
     }
 
-    private boolean checkIfAppIsSystemApp(ApplicationInfo appInfo) {
-        if((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
-            //app is system app
-            return true;
-        else
-            //app is user-installed app
-            return false;
-    }
+
 
     /*private void startSU() {
         try {

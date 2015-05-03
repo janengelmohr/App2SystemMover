@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="txt_userapps_headline">User Apps</string>
+    <string name="txt_systemapps_headline">System Apps</string>
 </resources>
