@@ -17,15 +17,28 @@ public class AppPagerAdapter extends FragmentPagerAdapter {
 
         switch(position) {
             //return the corresponding fragment for each tab
-            case 0: return new UserAppFragment();
-            case 1: return new SystemAppFragment();
+            case 0: return new SettingsPageFragment();
+            case 1: return new UserAppFragment();
+            case 2: return new SystemAppFragment();
         }
     return null;
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0: return "Settings";
+            case 1: return "User Apps";
+            case 2: return "System Apps";
+        }
+        return null;
+    }
+
+    @Override
     public int getCount() {
         //return number of tabs
-        return 2;
+        return 3;
     }
+
+
 }

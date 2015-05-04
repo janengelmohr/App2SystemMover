@@ -24,11 +24,12 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initialize fragments
-        //get "root view"
+        //initialize fragments in view pager
         viewPager = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        //set first page on startup to avoid viewing the setting page on every startup
+        viewPager.setCurrentItem(1);
 
 
 
