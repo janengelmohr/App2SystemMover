@@ -31,49 +31,8 @@ public class MainActivity extends FragmentActivity {
         //set first page on startup to avoid viewing the setting page on every startup
         viewPager.setCurrentItem(1);
 
-
-
-
-        //startSU();
     }
 
-
-
-    /*private void startSU() {
-        try {
-            // start an SU process
-            this.suProcess = Runtime.getRuntime().exec("su");
-            os = new DataOutputStream(suProcess.getOutputStream());
-            // check for root
-            if (deviceIsRooted()) {
-                alterPermissions();
-
-                // get settings storage reference
-                final SharedPreferences settings = getSharedPreferences(getPackageName() + "_preferences", MODE_PRIVATE);
-                // get current setting
-                boolean applyMinfrees = settings.getBoolean(getResources().getString(R.string.text_minfree_values), false);
-                if (applyMinfrees) {
-                    // if switch is checked, apply reasonable minfree values
-                    setReasonableMinfrees();
-                }
-
-                if (checkIfPermissionsAreSetCorrect()) {
-                    Toast.makeText(getApplicationContext(), "Everything went fine. Enjoy multitasking! :)", Toast.LENGTH_SHORT).show();
-                } else {
-                    // should never happen, but just in case... :)
-                    Toast.makeText(getApplicationContext(), "Mhm... Something went wrong. The permissions can't be altered even though we are rooted.", Toast.LENGTH_LONG).show();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), "Couldn't acquire root. :(", Toast.LENGTH_LONG).show();
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            // if an exception is thrown, the process is destroyed
-            this.suProcess.destroy();
-        }
-        this.suProcess.destroy();
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

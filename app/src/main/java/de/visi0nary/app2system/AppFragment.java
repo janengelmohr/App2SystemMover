@@ -20,6 +20,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by visi0nary on 04.05.15.
@@ -29,31 +31,49 @@ public class AppFragment extends ListFragment {
     protected ArrayList<ApplicationInfo> systemAppList;
     protected ArrayList<ApplicationInfo> userAppList;
     protected MoveAlertDialogFactory dialogFactory = new MoveAlertDialogFactory();
-    private boolean deviceIsRooted = false;
+    protected static boolean deviceIsRooted = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_systemapp, container, false);
-        //initial root check
-        if (deviceIsRooted()) {
-            deviceIsRooted=true;
-        }
 
         return rootView;
     }
 
 
 
-    private void moveApp(ApplicationInfo appInfo) {
-        if (deviceIsRooted) {
+    private void moveApp(ApplicationInfo appInfo, int isUserApp) {
+        if (deviceIsRooted()) {
             Process suProcess = null;
             try {
+                StringBuilder finalCommandBuilder = new StringBuilder("mv -rf ");
+                String path = new String(appInfo.sourceDir);
+                String[] splittedPath = path.split("/");
+                StringBuilder pathBuilder = new StringBuilder();
+                for(int i=0; i<splittedPath.length-1; i++) {
+                    pathBuilder.append(splittedPath[i] + "/");
+                    finalCommandBuilder.append(splittedPath[i]+"/");
+                }
+                String targetPath;
+                if (isUserApp==0) {
+                    targetPath = pathBuilder.toString().replace("system", "data");
+                }
+                else {
+                    targetPath = pathBuilder.toString().replace("data", "system");
+                }
+                finalCommandBuilder.append(" "+targetPath+"\n");
+                Log.i("output ", finalCommandBuilder.toString());
+
                 // start an SU process
                 suProcess = Runtime.getRuntime().exec("su");
                 DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
-                
+                // write final command into stream...
+                os.writeBytes(finalCommandBuilder.toString());
+                // ...and flush it so it's executed
+                os.flush();
+                //TODO: mv fails with invalid arguments, need to fix this
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -110,10 +130,10 @@ public class AppFragment extends ListFragment {
     public class MoveAlertDialogFactory {
 
         // if type == 0 it's a system app, if 1 it's a user app
-        public AlertDialog create(int type, Activity activity, long id) {
+        public AlertDialog create(int isUserApp, Activity activity, long id) {
             final long appId = id;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-            switch (type) {
+            switch (isUserApp) {
                 //it's a system app
                 case 0:
                     alertDialogBuilder.setMessage(R.string.txt_alertdialog_move_to_data);
@@ -123,7 +143,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             final Long temp = new Long(appId);
-                            moveApp(systemAppList.get(temp.intValue()));
+                            moveApp(systemAppList.get(temp.intValue()), 0);
                         }
                     });
 
@@ -143,7 +163,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             final Long temp = new Long(appId);
-                            moveApp(userAppList.get(temp.intValue()));
+                            moveApp(userAppList.get(temp.intValue()), 1);
                         }
                     });
 
