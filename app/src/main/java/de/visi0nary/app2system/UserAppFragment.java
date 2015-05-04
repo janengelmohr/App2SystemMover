@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * Created by visi0nary on 03.05.15.
  */
-public class UserAppFragment extends ListFragment {
+public class UserAppFragment extends AppFragment {
 
-    private ArrayList<ApplicationInfo> userAppList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +31,7 @@ public class UserAppFragment extends ListFragment {
 
         //TODO: implement adapter sorting logic
         final ArrayList<String> userAppNamesList = new ArrayList<String>();
-        userAppList = new ArrayList<ApplicationInfo>();
+        super.userAppList = new ArrayList<ApplicationInfo>();
         // get all apps
         final PackageManager pm = getActivity().getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -41,7 +41,7 @@ public class UserAppFragment extends ListFragment {
             // use human readable app name instead of package name
             if(!checkIfAppIsSystemApp(appInfo))
                 userAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
-                userAppList.add(appInfo);
+                super.userAppList.add(appInfo);
         }
         // add apps to adapter
         final ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, userAppNamesList);
@@ -53,31 +53,7 @@ public class UserAppFragment extends ListFragment {
     //this method implements the real functionality: if an app is clicked a pop up should appear
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        final long appId = id;
-        //open dialog pop up
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setMessage(R.string.txt_alertdialog_move_to_system);
-        alertDialogBuilder.setTitle(R.string.txt_alertdialog_headline);
-        alertDialogBuilder.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //user clicked ok
-                final Long temp = new Long(appId);
-                moveApp(userAppList.get(temp.intValue()));
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //user canceled action
-            }
-        });
-        alertDialogBuilder.create().show();
-
-    }
-
-    private void moveApp(ApplicationInfo appInfo) {
+        super.dialogFactory.create(1, getActivity(), id).show();
 
     }
 
