@@ -29,12 +29,17 @@ public class AppFragment extends ListFragment {
     protected ArrayList<ApplicationInfo> systemAppList;
     protected ArrayList<ApplicationInfo> userAppList;
     protected MoveAlertDialogFactory dialogFactory = new MoveAlertDialogFactory();
+    private boolean deviceIsRooted = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_systemapp, container, false);
+        //initial root check
+        if (deviceIsRooted()) {
+            deviceIsRooted=true;
+        }
 
         return rootView;
     }
@@ -42,15 +47,13 @@ public class AppFragment extends ListFragment {
 
 
     private void moveApp(ApplicationInfo appInfo) {
-        if (deviceIsRooted()) {
+        if (deviceIsRooted) {
             Process suProcess = null;
             try {
                 // start an SU process
                 suProcess = Runtime.getRuntime().exec("su");
                 DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
-                Log.i("data dir", appInfo.dataDir);
-
-
+                
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -106,9 +109,7 @@ public class AppFragment extends ListFragment {
     // inner factory class
     public class MoveAlertDialogFactory {
 
-
         // if type == 0 it's a system app, if 1 it's a user app
-
         public AlertDialog create(int type, Activity activity, long id) {
             final long appId = id;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
@@ -153,7 +154,7 @@ public class AppFragment extends ListFragment {
                         }
                     });
                     break;
-
+                //something went wrong (should never happen)
                 default:
                     alertDialogBuilder.setMessage(R.string.txt_error_creating_dialog);
                     alertDialogBuilder.setTitle(R.string.txt_error_creating_dialog_headline);
