@@ -46,48 +46,80 @@ public class AppFragment extends ListFragment {
 
     private void moveApp(ApplicationInfo appInfo, int isUserApp) {
         if (deviceIsRooted()) {
-            Process suProcess = null;
-            try {
-                StringBuilder finalCommandBuilder = new StringBuilder("mv -rf ");
-                String path = new String(appInfo.sourceDir);
-                String[] splittedPath = path.split("/");
-                StringBuilder pathBuilder = new StringBuilder();
-                for(int i=0; i<splittedPath.length-1; i++) {
-                    pathBuilder.append(splittedPath[i] + "/");
-                    finalCommandBuilder.append(splittedPath[i]+"/");
-                }
-                String targetPath;
-                if (isUserApp==0) {
-                    targetPath = pathBuilder.toString().replace("system", "data");
-                }
-                else {
-                    targetPath = pathBuilder.toString().replace("data", "system");
-                }
-                finalCommandBuilder.append(" "+targetPath+"\n");
-                Log.i("output ", finalCommandBuilder.toString());
+            if(busyboxIsInstalled()) {
+                Process suProcess = null;
+                try {
+                    StringBuilder finalCommandBuilder = new StringBuilder("busybox mv ");
+                    String path = new String(appInfo.sourceDir);
+                    // thanks to Markus Heider for the idea of using split instead of a regex
+                    String[] splittedPath = path.split("/");
+                    StringBuilder pathBuilder = new StringBuilder();
+                    for (int i = 0; i < splittedPath.length - 1; i++) {
+                        pathBuilder.append(splittedPath[i] + "/");
+                        finalCommandBuilder.append(splittedPath[i] + "/");
+                    }
+                    String targetPath;
+                    if (isUserApp == 0) {
+                        targetPath = pathBuilder.toString().replace("system", "data");
+                    } else {
+                        targetPath = pathBuilder.toString().replace("data", "system");
+                    }
+                    finalCommandBuilder.append(" " + targetPath + "\n");
+                    Log.i("output ", finalCommandBuilder.toString());
 
-                // start an SU process
-                suProcess = Runtime.getRuntime().exec("su");
-                DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
-                // write final command into stream...
-                os.writeBytes(finalCommandBuilder.toString());
-                // ...and flush it so it's executed
-                os.flush();
-                //TODO: mv fails with invalid arguments, need to fix this
+                    // start an SU process
+                    suProcess = Runtime.getRuntime().exec("su");
+                    DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
+                    // remount system as read/write
+                    os.writeBytes("mount -o remount,rw /system \n");
+                    // write final command into stream...
+                    os.writeBytes(finalCommandBuilder.toString());
+                    // remount system as read only again
+                    os.writeBytes("mount -o remount,ro /system \n");
+                    os.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (suProcess != null)
+                        // clean up
+                        suProcess.destroy();
+                }
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                if(suProcess!=null)
-                    // clean up
-                    suProcess.destroy();
+            else {
+                Toast.makeText(getActivity().getApplicationContext(), "Busybox is not installed. :(", Toast.LENGTH_LONG).show();
             }
         }
-        //we're not rooted
         else {
             Toast.makeText(getActivity().getApplicationContext(), "Couldn't acquire root. :(", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private boolean busyboxIsInstalled() {
+        int returnValue = -1;
+
+        Process busybox = null;
+        try {
+            // open a busybox
+            busybox = Runtime.getRuntime().exec("busybox");
+            try {
+                // busybox will immediately exit if it exists
+                busybox.waitFor();
+                // check for the exit value (0 if busybox is installed)
+                returnValue = busybox.exitValue();
+            } catch (Exception e) {
+                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception e) {
+            Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally {
+            // clean up
+            if(busybox!=null) {
+                busybox.destroy();
+            }
+        }
+        return(returnValue==0);
     }
 
     // returns true if device is rooted and false if not
