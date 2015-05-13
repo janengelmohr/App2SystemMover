@@ -2,6 +2,7 @@ package de.visi0nary.app2system;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(R.layout.singleentrylayout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.label);
+        textView.setTextColor(Color.BLACK);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         textView.setText(this.appNames.get(position));
         Drawable appIcon = context.getPackageManager().getApplicationIcon(apps.get(position));
