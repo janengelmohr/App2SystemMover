@@ -12,6 +12,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.visi0nary.app2system.CustomListAdapter;
 import de.visi0nary.app2system.R;
 
 /**
@@ -32,19 +33,19 @@ public class SystemAppFragment extends AppFragment {
         super.systemAppList = new ArrayList<ApplicationInfo>();
         // get all apps
         final PackageManager pm = getActivity().getPackageManager();
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        ArrayList<ApplicationInfo> systemPackages = new ArrayList<ApplicationInfo>();
 
         //iterate through all apps and decide whether they're system or user apps and put them into the corresponding list
-        for(ApplicationInfo appInfo : packages) {
+        for(ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
             // use human readable app name instead of package name
             if(checkIfAppIsSystemApp(appInfo)) {
                 systemAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
+                systemPackages.add(appInfo);
                 super.systemAppList.add(appInfo);
             }
         }
         // add apps to adapter
-        //TODO add custom adapter to show fancy list view\
-        final ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, systemAppNamesList);
+        final CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(), systemPackages, systemAppNamesList);
         setListAdapter(adapter);
 
         return rootView;
