@@ -3,7 +3,7 @@ package de.visi0nary.app2system.Models;
 /**
  * Created by visi0nary on 09.05.15.
  */
-public class AppListItem {
+public class AppListModel {
 
 
     private String humanReadableName;

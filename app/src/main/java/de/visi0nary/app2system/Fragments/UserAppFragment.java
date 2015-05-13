@@ -1,13 +1,8 @@
-package de.visi0nary.app2system;
+package de.visi0nary.app2system.Fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.visi0nary.app2system.R;
 
 /**
  * Created by visi0nary on 03.05.15.

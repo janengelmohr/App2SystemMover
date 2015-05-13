@@ -1,13 +1,8 @@
-package de.visi0nary.app2system;
+package de.visi0nary.app2system.Fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.visi0nary.app2system.R;
 
 /**
  * Created by visi0nary on 03.05.15.
@@ -46,6 +43,7 @@ public class SystemAppFragment extends AppFragment {
             }
         }
         // add apps to adapter
+        //TODO add custom adapter to show fancy list view\
         final ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, systemAppNamesList);
         setListAdapter(adapter);
 

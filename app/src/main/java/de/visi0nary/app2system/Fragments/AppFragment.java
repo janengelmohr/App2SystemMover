@@ -1,4 +1,4 @@
-package de.visi0nary.app2system;
+package de.visi0nary.app2system.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.visi0nary.app2system.R;
 
 /**
  * Created by visi0nary on 04.05.15.

@@ -4,6 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import de.visi0nary.app2system.Fragments.SettingsPageFragment;
+import de.visi0nary.app2system.Fragments.SystemAppFragment;
+import de.visi0nary.app2system.Fragments.UserAppFragment;
+
 /**
  * Created by visi0nary on 03.05.15.
  */

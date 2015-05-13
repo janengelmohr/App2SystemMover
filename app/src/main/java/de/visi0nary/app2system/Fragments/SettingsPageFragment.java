@@ -1,4 +1,4 @@
-package de.visi0nary.app2system;
+package de.visi0nary.app2system.Fragments;
 
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;

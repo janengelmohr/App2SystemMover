@@ -1,5 +1,8 @@
 package de.visi0nary.app2system.Views;
 
+import android.widget.ImageView;
+import android.widget.TextView;
+
 /**
  * Created by visi0nary on 10.05.15.
  */
