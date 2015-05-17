@@ -10,16 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 
 import de.visi0nary.app2system.MainActivity;
@@ -38,7 +31,7 @@ public class AppFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_systemapp, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
 
         return rootView;
     }

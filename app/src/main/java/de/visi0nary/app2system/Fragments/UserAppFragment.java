@@ -26,14 +26,14 @@ public class UserAppFragment extends AppFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_userapp, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
 
         //TODO: implement adapter sorting logic
-        final ArrayList<String> userAppNamesList = new ArrayList<String>();
-        super.userAppList = new ArrayList<ApplicationInfo>();
+        final ArrayList<String> userAppNamesList = new ArrayList<>();
+        super.userAppList = new ArrayList<>();
         // get all apps
         final PackageManager pm = getActivity().getPackageManager();
-        ArrayList<ApplicationInfo> userPackages = new ArrayList<ApplicationInfo>();
+        ArrayList<ApplicationInfo> userPackages = new ArrayList<>();
 
         //iterate through all apps and decide whether they're system or user apps and put them into the corresponding list
         for(ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
