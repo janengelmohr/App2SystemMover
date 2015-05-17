@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 
 /**
