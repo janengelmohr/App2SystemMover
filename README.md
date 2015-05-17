@@ -4,6 +4,9 @@ This app is able to intuitively switch apps from /system to /user and vice versa
 TODO: 
 
 -> implement intuitive UI
+
 -> implement undo functionality
+
 -> implement live list updating
+
 -> add settings page
