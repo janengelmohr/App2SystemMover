@@ -38,7 +38,7 @@ public class SystemAppFragment extends AppFragment {
         //iterate through all apps and decide whether they're system or user apps and put them into the corresponding list
         for(ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
             // use human readable app name instead of package name
-            if(checkIfAppIsSystemApp(appInfo)) {
+            if(super.checkIfAppIsSystemApp(appInfo)) {
                 systemAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
                 systemPackages.add(appInfo);
                 super.systemAppList.add(appInfo);
@@ -58,8 +58,5 @@ public class SystemAppFragment extends AppFragment {
     }
 
 
-    private boolean checkIfAppIsSystemApp(ApplicationInfo appInfo) {
-        // if app is system app return true, else false
-        return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
-    }
+
 }

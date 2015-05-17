@@ -90,7 +90,10 @@ public class AppFragment extends ListFragment {
         return finalCommandBuilder.toString();
     }
 
-
+    protected boolean checkIfAppIsSystemApp(ApplicationInfo appInfo) {
+        // if app is system app return true, else false
+        return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+    }
 
 
     // inner factory class
@@ -156,5 +159,4 @@ public class AppFragment extends ListFragment {
             return alertDialogBuilder.create();
         }
     }
-
 }
