@@ -1,16 +1,14 @@
 package de.visi0nary.app2system.Fragments;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import de.visi0nary.app2system.CustomListAdapter;
+import de.visi0nary.app2system.MainActivity;
+import de.visi0nary.app2system.Model.ListProvider;
 import de.visi0nary.app2system.R;
 
 /**
@@ -25,25 +23,13 @@ public class UserAppFragment extends AppFragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
-
+        ListProvider provider = ListProvider.create(getActivity());
         //TODO: implement adapter sorting logic
-        final ArrayList<String> userAppNamesList = new ArrayList<>();
-        super.userAppList = new ArrayList<>();
-        // get all apps
-        final PackageManager pm = getActivity().getPackageManager();
-        ArrayList<ApplicationInfo> userPackages = new ArrayList<>();
-
-        //iterate through all apps and decide whether they're system or user apps and put them into the corresponding list
-        for(ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
-            // use human readable app name instead of package name
-            if(!super.checkIfAppIsSystemApp(appInfo)) {
-                userAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
-                userPackages.add(appInfo);
-                super.userAppList.add(appInfo);
-            }
-        }
         // add apps to adapter
-        final CustomListAdapter adapter = new CustomListAdapter(getActivity().getApplicationContext(), userPackages, userAppNamesList);
+        final CustomListAdapter adapter = new CustomListAdapter(
+                getActivity().getApplicationContext(),
+                ((MainActivity)getActivity()).getUserAppList(),
+                ((MainActivity)getActivity()).getUserAppNamesList());
         setListAdapter(adapter);
 
         return rootView;

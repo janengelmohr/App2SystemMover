@@ -55,10 +55,19 @@ public class AppFragment extends ListFragment {
                 writer.write("mount -o remount,ro /system");
                 writer.newLine();
                 writer.flush();
+                //if(isSystemApp(appInfo)) {
+                    //TODO fix null reference invocation which is caused due to super class reference in sub classes
+                    /*systemAppList.remove(appInfo);
+                    userAppList.add(appInfo);
+                }
+                else {
+                    userAppList.remove(appInfo);
+                    systemAppList.add(appInfo);
+                }
+                activity.getPagerAdapter().notifyDataSetChanged();*/
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -83,7 +92,7 @@ public class AppFragment extends ListFragment {
         return finalCommandBuilder.toString();
     }
 
-    protected boolean checkIfAppIsSystemApp(ApplicationInfo appInfo) {
+    protected boolean isSystemApp(ApplicationInfo appInfo) {
         // if app is system app return true, else false
         return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
@@ -93,7 +102,8 @@ public class AppFragment extends ListFragment {
     public class MoveAlertDialogFactory {
         protected long appId;
         // if type == 0 it's a system app, if 1 it's a user app
-        public AlertDialog create(int isUserApp, Activity activity, long id) {
+        public AlertDialog create(int isUserApp, final Activity activity, long id) {
+            final MainActivity mainActivity = (MainActivity) activity;
             appId=id;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
             switch (isUserApp) {
@@ -106,7 +116,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             Long temp = Long.valueOf(appId);
-                            moveApp(systemAppList.get(temp.intValue()), 0);
+                            moveApp(mainActivity.getSystemAppList().get(temp.intValue()), 0);
                         }
                     });
 
@@ -126,7 +136,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             Long temp = Long.valueOf(appId);
-                            moveApp(userAppList.get(temp.intValue()), 1);
+                            moveApp(mainActivity.getUserAppList().get(temp.intValue()), 1);
                         }
                     });
 

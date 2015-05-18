@@ -1,5 +1,10 @@
 package de.visi0nary.app2system;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -11,22 +16,47 @@ import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
+import de.visi0nary.app2system.Model.ListProvider;
+import de.visi0nary.app2system.Model.ListType;
 
 
 public class MainActivity extends FragmentActivity {
 
     private AppPagerAdapter pagerAdapter;
     private ViewPager viewPager;
-
     private Process suProcess = null;
     private DataOutputStream stdin = null;
     private BufferedWriter writer = null;
     private boolean rootInitialized;
 
+
+    protected ArrayList<ApplicationInfo> systemAppList;
+    protected ArrayList<String> systemAppNamesList;
+    protected ArrayList<ApplicationInfo> userAppList;
+    protected ArrayList<String> userAppNamesList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        systemAppList = new ArrayList<>();
+        userAppList = new ArrayList<>();
+        systemAppNamesList = new ArrayList<>();
+        userAppNamesList = new ArrayList<>();
+        //show loading screen until Asynctasks are still working
+        AppFetcherTask appFetcherTask = new AppFetcherTask(this);
+        appFetcherTask.execute();
+        try {
+            appFetcherTask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         //initialize fragments in view pager
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -61,6 +91,26 @@ public class MainActivity extends FragmentActivity {
                 suProcess.destroy();
             }
         }
+    }
+
+    public AppPagerAdapter getPagerAdapter() {
+        return pagerAdapter;
+    }
+
+    public ArrayList<ApplicationInfo> getSystemAppList() {
+        return systemAppList;
+    }
+
+    public ArrayList<String> getSystemAppNamesList() {
+        return systemAppNamesList;
+    }
+
+    public ArrayList<ApplicationInfo> getUserAppList() {
+        return userAppList;
+    }
+
+    public ArrayList<String> getUserAppNamesList() {
+        return userAppNamesList;
     }
 
 
@@ -166,6 +216,71 @@ public class MainActivity extends FragmentActivity {
 
     public boolean isRootInitialized() {
         return rootInitialized;
+    }
+
+
+    //inner worker thread class
+    //<input, progress, output>
+    class AppFetcherTask extends AsyncTask<Void, Integer, Void> {
+        ProgressDialog dialog;
+
+        public AppFetcherTask(Activity activity) {
+            dialog = new ProgressDialog(MainActivity.this);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PackageManager pm = getPackageManager();
+
+            //do the heavy work here (aka filling all lists)
+            //an asynctask will be started for each list
+            systemAppList.clear();
+            userAppList.clear();
+            systemAppNamesList.clear();
+            userAppNamesList.clear();
+            //iterate through all apps and decide whether they're system or user apps and put them into the corresponding list
+            for (ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
+                // use human readable app name instead of package name
+                if (isSystemApp(appInfo)) {
+                    systemAppList.add(appInfo);
+                    systemAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
+                } else {
+                    userAppList.add(appInfo);
+                    userAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog.setTitle("Sorry!");
+            dialog.setMessage("Please wait while all your installed apps are fetched.");
+            dialog.show();
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... integers) {
+            //update the progress
+        }
+
+        @Override
+        protected void onPostExecute(Void voi) {
+            //set a flag that indicates the data is available
+            dialog.dismiss();
+        }
+
+        protected boolean isSystemApp(ApplicationInfo appInfo) {
+            // if app is system app return true, else false
+            return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+        }
+    }
+
+
+    public void rescanAllApps() {
+        AppFetcherTask task = new AppFetcherTask(this);
+        task.execute();
     }
 
     @Override
