@@ -8,7 +8,6 @@ import android.widget.ListView;
 
 import de.visi0nary.app2system.CustomListAdapter;
 import de.visi0nary.app2system.MainActivity;
-import de.visi0nary.app2system.Model.ListProvider;
 import de.visi0nary.app2system.R;
 
 /**
@@ -23,7 +22,6 @@ public class UserAppFragment extends AppFragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
-        ListProvider provider = ListProvider.create(getActivity());
         //TODO: implement adapter sorting logic
         // add apps to adapter
         final CustomListAdapter adapter = new CustomListAdapter(

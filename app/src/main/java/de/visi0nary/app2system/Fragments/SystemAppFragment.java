@@ -1,18 +1,13 @@
 package de.visi0nary.app2system.Fragments;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import de.visi0nary.app2system.CustomListAdapter;
 import de.visi0nary.app2system.MainActivity;
-import de.visi0nary.app2system.Model.ListProvider;
 import de.visi0nary.app2system.R;
 
 /**
@@ -27,7 +22,6 @@ public class SystemAppFragment extends AppFragment {
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
 
         //TODO: implement adapter sorting logic
-        ListProvider provider = ListProvider.create(getActivity());
         // add apps to adapter
         final CustomListAdapter adapter = new CustomListAdapter(
                 getActivity().getApplicationContext(),

@@ -19,8 +19,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import de.visi0nary.app2system.Model.ListProvider;
-import de.visi0nary.app2system.Model.ListType;
 
 
 public class MainActivity extends FragmentActivity {
