@@ -53,20 +53,30 @@ public class AppFragment extends ListFragment {
                 writer.write("mount -o remount,ro /system");
                 writer.newLine();
                 writer.flush();
-                //if(isSystemApp(appInfo)) {
-                    //TODO fix null reference invocation which is caused due to super class reference in sub classes
-                    /*systemAppList.remove(appInfo);
-                    userAppList.add(appInfo);
+                if(isSystemApp(appInfo)) {
+                    //TODO fix updating
+                    activity.getDataProvider().getSystemAppList().remove(appInfo);
+                    activity.getDataProvider().getSystemAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
+                    activity.getDataProvider().getUserAppList().add(appInfo);
+                    activity.getDataProvider().getUserAppNamesList().add(activity.getPackageManager().getApplicationLabel(appInfo).toString());
                 }
                 else {
-                    userAppList.remove(appInfo);
-                    systemAppList.add(appInfo);
+                    activity.getDataProvider().getUserAppList().remove(appInfo);
+                    activity.getDataProvider().getUserAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
+                    activity.getDataProvider().getSystemAppList().add(appInfo);
+                    activity.getDataProvider().getSystemAppNamesList().add(activity.getPackageManager().getApplicationLabel(appInfo).toString());
                 }
-                activity.getPagerAdapter().notifyDataSetChanged();*/
+                activity.getPagerAdapter().updateSystemApps();
+                activity.getPagerAdapter().updateUserApps();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    protected boolean isSystemApp(ApplicationInfo appInfo) {
+        // if app is system app return true, else false
+        return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
 
     private String determineMoveCommand(ApplicationInfo appInfo, int isUserApp) {
