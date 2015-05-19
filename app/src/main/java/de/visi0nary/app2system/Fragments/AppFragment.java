@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -55,12 +56,14 @@ public class AppFragment extends ListFragment {
                 writer.flush();
                 if(isSystemApp(appInfo)) {
                     //TODO fix updating
+                    Toast.makeText(getActivity().getApplicationContext(), activity.getPackageManager().getApplicationLabel(appInfo).toString() + " successfully moved to /data!", Toast.LENGTH_LONG).show();
                     activity.getDataProvider().getSystemAppList().remove(appInfo);
                     activity.getDataProvider().getSystemAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
                     activity.getDataProvider().getUserAppList().add(appInfo);
                     activity.getDataProvider().getUserAppNamesList().add(activity.getPackageManager().getApplicationLabel(appInfo).toString());
                 }
                 else {
+                    Toast.makeText(getActivity().getApplicationContext(), activity.getPackageManager().getApplicationLabel(appInfo).toString() + " successfully moved to /system!", Toast.LENGTH_LONG).show();
                     activity.getDataProvider().getUserAppList().remove(appInfo);
                     activity.getDataProvider().getUserAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
                     activity.getDataProvider().getSystemAppList().add(appInfo);
