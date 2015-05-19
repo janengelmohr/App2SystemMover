@@ -12,25 +12,27 @@ import de.visi0nary.app2system.R;
 
 /**
  * Created by visi0nary on 03.05.15.
+ * This fragment shows all system apps in a list view
  */
 public class SystemAppFragment extends AppFragment {
+
+    CustomListAdapter adapter = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
-
-        //TODO: implement adapter sorting logic
-        // add apps to adapter
-        final CustomListAdapter adapter = new CustomListAdapter(
-                getActivity().getApplicationContext(),
-                ((MainActivity)getActivity()).getSystemAppList(),
-                ((MainActivity)getActivity()).getSystemAppNamesList());
-
-        setListAdapter(adapter);
-
         return rootView;
+    }
+
+    public void update() {
+        //update list shown in this fragment
+        this.adapter = new CustomListAdapter(
+                getActivity().getApplicationContext(),
+                ((MainActivity)getActivity()).getDataProvider().getSystemAppList(),
+                ((MainActivity)getActivity()).getDataProvider().getSystemAppNamesList());
+        setListAdapter(adapter);
+        this.adapter.notifyDataSetChanged();
     }
 
     //this method implements the real functionality: if an app is clicked a pop up should appear

@@ -13,31 +13,28 @@ import android.view.ViewGroup;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import de.visi0nary.app2system.MainActivity;
 import de.visi0nary.app2system.R;
 
 /**
  * Created by visi0nary on 04.05.15.
+ * This class holds all methods that both SystemAppFragment and UserAppFragment use
  */
 public class AppFragment extends ListFragment {
 
-    protected ArrayList<ApplicationInfo> systemAppList;
-    protected ArrayList<ApplicationInfo> userAppList;
     protected MoveAlertDialogFactory dialogFactory = new MoveAlertDialogFactory();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
-
         return rootView;
     }
 
 
     private void moveApp(ApplicationInfo appInfo, int isUserApp) {
+        //method that moves the app with a simple shell command (mv)
         MainActivity activity = (MainActivity) getActivity();
         if(activity.isRootInitialized()) {
             BufferedWriter writer = activity.getWriter();
@@ -46,12 +43,13 @@ public class AppFragment extends ListFragment {
                 writer.write("mount -o remount,rw /system");
                 writer.newLine();
                 writer.flush();
-                // write final command into stream...
+                // move the app
                 String moveCommand = determineMoveCommand(appInfo, isUserApp);
                 Log.i("output ", moveCommand);
                 writer.write(moveCommand);
                 writer.newLine();
                 writer.flush();
+                // and remount system as read only again
                 writer.write("mount -o remount,ro /system");
                 writer.newLine();
                 writer.flush();
@@ -72,6 +70,7 @@ public class AppFragment extends ListFragment {
     }
 
     private String determineMoveCommand(ApplicationInfo appInfo, int isUserApp) {
+        // this method returns the move command (busybox mv *source* *destination*)
         StringBuilder finalCommandBuilder = new StringBuilder("busybox mv ");
         String path = new String(appInfo.sourceDir);
         // thanks to Markus Heider for the idea of using split instead of a regex
@@ -92,13 +91,7 @@ public class AppFragment extends ListFragment {
         return finalCommandBuilder.toString();
     }
 
-    protected boolean isSystemApp(ApplicationInfo appInfo) {
-        // if app is system app return true, else false
-        return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
-    }
-
-
-    // inner factory class
+    // inner factory class that creates confirmation messages before an app is really moved
     public class MoveAlertDialogFactory {
         protected long appId;
         // if type == 0 it's a system app, if 1 it's a user app
@@ -116,7 +109,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             Long temp = Long.valueOf(appId);
-                            moveApp(mainActivity.getSystemAppList().get(temp.intValue()), 0);
+                            moveApp(mainActivity.getDataProvider().getSystemAppList().get(temp.intValue()), 0);
                         }
                     });
 
@@ -136,7 +129,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             Long temp = Long.valueOf(appId);
-                            moveApp(mainActivity.getUserAppList().get(temp.intValue()), 1);
+                            moveApp(mainActivity.getDataProvider().getUserAppList().get(temp.intValue()), 1);
                         }
                     });
 

@@ -10,24 +10,46 @@ import de.visi0nary.app2system.Fragments.UserAppFragment;
 
 /**
  * Created by visi0nary on 03.05.15.
+ * This class manages layout of all fragments
  */
 public class AppPagerAdapter extends FragmentPagerAdapter {
+
+    SettingsPageFragment settingsPageFragment;
+    UserAppFragment userAppFragment;
+    SystemAppFragment systemAppFragment;
+
     public AppPagerAdapter(FragmentManager fm) {
         super(fm);
+        this.settingsPageFragment = new SettingsPageFragment();
+        this.userAppFragment = new UserAppFragment();
+        this.systemAppFragment = new SystemAppFragment();
     }
+
+
+    //invokes an update of the user apps list
+    public void updateUserApps() {
+        this.userAppFragment.update();
+    }
+
+    //invokes an update of the system apps list
+    public void updateSystemApps() {
+        this.systemAppFragment.update();
+    }
+
 
     @Override
     public Fragment getItem(int position) {
 
         switch(position) {
             //return the corresponding fragment for each tab
-            case 0: return new SettingsPageFragment();
-            case 1: return new UserAppFragment();
-            case 2: return new SystemAppFragment();
+            case 0: return this.settingsPageFragment;
+            case 1: return this.userAppFragment;
+            case 2: return this.systemAppFragment;
         }
     return null;
     }
 
+    //set tab titles
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
@@ -38,6 +60,7 @@ public class AppPagerAdapter extends FragmentPagerAdapter {
         return null;
     }
 
+    //return amount of tabs
     @Override
     public int getCount() {
         //return number of tabs

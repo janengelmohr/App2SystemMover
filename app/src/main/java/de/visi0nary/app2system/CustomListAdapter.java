@@ -29,9 +29,9 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         this.appNames = appNames;
     }
 
-
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+        //inflates the list while scrolling
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView = inflater.inflate(R.layout.singleentrylayout, parent, false);
@@ -43,6 +43,8 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         imageView.setImageDrawable(appIcon);
 
         return rowView;
-
+        //TODO; fix performance issues while scrolling
     }
+
+    //TODO: implement adapter sorting logic
 }
