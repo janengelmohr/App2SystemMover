@@ -1,4 +1,4 @@
-package de.visi0nary.app2system.Fragments;
+package de.visi0nary.app2system;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -129,6 +129,8 @@ public class AppDataProvider {
             dialog.setMessage("Please wait while I fetch all installed apps.");
             dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             dialog.setProgress(0);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
             //set max to the number of available apps
             dialog.setMax(callingActivity.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA).size());
             dialog.show();
