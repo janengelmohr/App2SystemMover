@@ -1,8 +1,8 @@
 package de.visi0nary.app2system;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentPagerAdapter;
 
 import de.visi0nary.app2system.Fragments.SettingsPageFragment;
 import de.visi0nary.app2system.Fragments.SystemAppFragment;

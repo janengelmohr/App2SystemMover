@@ -126,7 +126,7 @@ public class AppDataProvider {
             //show a nice dialog while the processing is done so the user can see what's going on
             dialog = new ProgressDialog(callingActivity);
             dialog.setTitle("Updating app list");
-            dialog.setMessage("Please wait while I fetch all installed apps.");
+            dialog.setMessage("Please wait while all installed apps are fetched.");
             dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             dialog.setProgress(0);
             dialog.setCancelable(false);

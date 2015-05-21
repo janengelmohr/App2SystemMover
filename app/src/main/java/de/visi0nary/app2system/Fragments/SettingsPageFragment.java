@@ -1,9 +1,7 @@
 package de.visi0nary.app2system.Fragments;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,6 @@ public class SettingsPageFragment extends Fragment {
     //add method to save current state and restore it afterwards (e.g. after installing a custom FW)
 
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);

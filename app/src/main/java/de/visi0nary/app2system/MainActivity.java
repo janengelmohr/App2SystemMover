@@ -1,7 +1,7 @@
 package de.visi0nary.app2system;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
 
     private AppPagerAdapter pagerAdapter;
     private ViewPager viewPager;
@@ -32,7 +32,7 @@ public class MainActivity extends FragmentActivity {
 
         //initialize fragments in view pager
         viewPager = (ViewPager) findViewById(R.id.pager);
-        pagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new AppPagerAdapter(getFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         //set first page on startup to avoid viewing the setting page on every startup
         viewPager.setCurrentItem(1);

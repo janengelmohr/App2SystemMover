@@ -2,10 +2,10 @@ package de.visi0nary.app2system.Fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ListFragment;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +34,7 @@ public class AppFragment extends ListFragment {
     }
 
 
-    private void moveApp(ApplicationInfo appInfo, int isUserApp) {
+    private void moveApp(ApplicationInfo appInfo, int isUserApp, boolean isUndone) {
         //method that moves the app with a simple shell command (mv)
         MainActivity activity = (MainActivity) getActivity();
         if(activity.isRootInitialized()) {
@@ -55,14 +55,35 @@ public class AppFragment extends ListFragment {
                 writer.newLine();
                 writer.flush();
                 if(isSystemApp(appInfo)) {
-                    //TODO fix updating
-                    Toast.makeText(getActivity().getApplicationContext(), activity.getPackageManager().getApplicationLabel(appInfo).toString() + " successfully moved to /data!", Toast.LENGTH_LONG).show();
+                    //TODO add snackbar to revert action
+                   /* if(!isUndone) {
+                        SnackbarManager.show(Snackbar.with(activity.getApplicationContext())
+                                .text(activity.getPackageManager().getApplicationLabel(appInfo).toString() + " moved to /data")
+                                .actionLabel("Undo")
+                                .actionListener(new ActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(Snackbar snackbar) {
+                                        //moveApp(appInfo, 1, true);
+                                    }
+                                }));
+                    }*/
                     activity.getDataProvider().getSystemAppList().remove(appInfo);
                     activity.getDataProvider().getSystemAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
                     activity.getDataProvider().getUserAppList().add(appInfo);
                     activity.getDataProvider().getUserAppNamesList().add(activity.getPackageManager().getApplicationLabel(appInfo).toString());
                 }
                 else {
+                    /*if(!isUndone) {
+                        SnackbarManager.show(Snackbar.with(activity.getApplicationContext())
+                                .text(activity.getPackageManager().getApplicationLabel(appInfo).toString() + " moved to /system")
+                                .actionLabel("Undo")
+                                .actionListener(new ActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(Snackbar snackbar) {
+                                        //moveApp(appInfo, 0, true);
+                                    }
+                                }));
+                    }*/
                     Toast.makeText(getActivity().getApplicationContext(), activity.getPackageManager().getApplicationLabel(appInfo).toString() + " successfully moved to /system!", Toast.LENGTH_LONG).show();
                     activity.getDataProvider().getUserAppList().remove(appInfo);
                     activity.getDataProvider().getUserAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
@@ -122,7 +143,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             Long temp = Long.valueOf(appId);
-                            moveApp(mainActivity.getDataProvider().getSystemAppList().get(temp.intValue()), 0);
+                            moveApp(mainActivity.getDataProvider().getSystemAppList().get(temp.intValue()), 0, false);
                         }
                     });
 
@@ -142,7 +163,7 @@ public class AppFragment extends ListFragment {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
                             Long temp = Long.valueOf(appId);
-                            moveApp(mainActivity.getDataProvider().getUserAppList().get(temp.intValue()), 1);
+                            moveApp(mainActivity.getDataProvider().getUserAppList().get(temp.intValue()), 1, false);
                         }
                     });
 
