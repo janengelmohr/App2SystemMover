@@ -9,8 +9,6 @@ import android.os.Handler;
 
 import java.util.ArrayList;
 
-import de.visi0nary.app2system.MainActivity;
-
 /**
  * Created by visi0nary on 19.05.15.
  * This class contains all data models and keeps them consistent

@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
         pagerAdapter = new AppPagerAdapter(getFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         //set first page on startup to avoid viewing the setting page on every startup
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
     }
 
     @Override
