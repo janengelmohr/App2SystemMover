@@ -1,6 +1,5 @@
 package de.visi0nary.app2system;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +12,8 @@ import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+
+import de.visi0nary.app2system.external.SlidingTabLayout;
 
 
 public class MainActivity extends AppCompatActivity {

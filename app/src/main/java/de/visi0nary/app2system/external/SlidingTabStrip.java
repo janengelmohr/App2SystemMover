@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.visi0nary.app2system;
+package de.visi0nary.app2system.external;
 import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -23,8 +23,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
-
-import de.visi0nary.app2system.SlidingTabLayout;
 
 class SlidingTabStrip extends LinearLayout {
 
