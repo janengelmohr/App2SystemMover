@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import de.visi0nary.app2system.CustomListAdapter;
 import de.visi0nary.app2system.MainActivity;
+import de.visi0nary.app2system.Model.App;
 import de.visi0nary.app2system.R;
 
 /**
@@ -29,7 +30,7 @@ public class SystemAppFragment extends AppFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
-        this.adapter = new CustomListAdapter(getActivity(), new ArrayList<ApplicationInfo>(), new ArrayList<String>());
+        this.adapter = new CustomListAdapter(new ArrayList<App>());
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recylerview);
 
         layoutManager = new LinearLayoutManager((getActivity()));
@@ -38,9 +39,9 @@ public class SystemAppFragment extends AppFragment {
         return rootView;
     }
 
-    public void update(ArrayList<ApplicationInfo> apps, ArrayList<String> names) {
+    public void update(ArrayList<App> apps) {
         //update list shown in this fragment
-        this.adapter = new CustomListAdapter(getActivity(), apps, names);
+        this.adapter = new CustomListAdapter(apps);
         recyclerView.swapAdapter(adapter, false);
     }
 

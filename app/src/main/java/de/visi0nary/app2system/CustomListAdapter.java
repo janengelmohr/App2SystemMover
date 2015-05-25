@@ -14,14 +14,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import de.visi0nary.app2system.Model.App;
+
 /**
  * Created by visi0nary on 13.05.15.
  */
 public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.ViewHolder> {
 
-    private ArrayList<ApplicationInfo> apps;
-    private ArrayList<String> appNames;
-    private Context context;
+    private ArrayList<App> apps;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -35,47 +35,25 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         }
     }
 
-    public CustomListAdapter(Context context, ArrayList<ApplicationInfo> apps, ArrayList<String> appNames) {
+    public CustomListAdapter(ArrayList<App> apps) {
         this.apps = apps;
-        this.appNames = appNames;
-        this.context = context;
     }
 
-    public void refreshItems(ArrayList<ApplicationInfo> apps, ArrayList<String> names) {
+    public void refreshItems(ArrayList<App> apps) {
         this.apps = apps;
-        this.appNames = names;
         notifyDataSetChanged();
     }
 
-    public void addItem(int position, ApplicationInfo item, String appName) {
+    public void addItem(int position, App item) {
         apps.add(position, item);
-        appNames.add(position, appName);
         notifyItemInserted(position);
     }
 
-    public void removeItem(ApplicationInfo item, String appName) {
-        int position = appNames.indexOf(appName);
+    public void removeItem(App item) {
+        int position = apps.indexOf(item);
         apps.remove(item);
-        appNames.remove(appName);
         notifyItemRemoved(position);
     }
-
-    /*@Override
-    public View getView(int position, View view, ViewGroup parent) {
-        //inflates the list while scrolling
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View rowView = inflater.inflate(R.layout.singleentrylayout, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.label);
-        textView.setTextColor(Color.BLACK);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        textView.setText(this.appNames.get(position));
-        Drawable appIcon = context.getPackageManager().getApplicationIcon(apps.get(position));
-        imageView.setImageDrawable(appIcon);
-
-        return rowView;
-        //TODO; fix performance issues while scrolling
-    }*/
 
     @Override
     public CustomListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -88,23 +66,21 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     public void onBindViewHolder(CustomListAdapter.ViewHolder viewHolder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String name = appNames.get(position);
-        final ApplicationInfo app = apps.get(position);
-        viewHolder.text.setText(appNames.get(position));
-        viewHolder.icon.setImageDrawable(context.getPackageManager().getApplicationIcon(apps.get(position)));
+        String name = apps.get(position).getHumanReadableName();
+        final App app = apps.get(position);
+        viewHolder.text.setText(name);
+        viewHolder.icon.setImageDrawable((apps.get(position).getIcon()));
         viewHolder.text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeItem(app, name);
+                removeItem(app);
             }
         });
-
-        viewHolder.text.setText(appNames.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return appNames.size();
+        return apps.size();
     }
 
     //TODO: implement adapter sorting logic

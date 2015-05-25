@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import de.visi0nary.app2system.Fragments.SystemAppFragment;
 import de.visi0nary.app2system.Fragments.UserAppFragment;
+import de.visi0nary.app2system.Model.App;
 
 /**
  * Created by visi0nary on 03.05.15.
@@ -27,13 +28,13 @@ public class AppPagerAdapter extends FragmentStatePagerAdapter {
 
 
     //invokes an update of the user apps list
-    public void updateUserApps(ArrayList<ApplicationInfo> apps, ArrayList<String> names) {
-        this.userAppFragment.update(apps, names);
+    public void updateUserApps(ArrayList<App> apps) {
+        this.userAppFragment.update(apps);
     }
 
     //invokes an update of the system apps list
-    public void updateSystemApps(ArrayList<ApplicationInfo> apps, ArrayList<String> names) {
-        this.systemAppFragment.update(apps, names);
+    public void updateSystemApps(ArrayList<App> apps) {
+        this.systemAppFragment.update(apps);
     }
 
 

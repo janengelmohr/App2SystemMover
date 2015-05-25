@@ -9,16 +9,16 @@ import android.os.Handler;
 
 import java.util.ArrayList;
 
+import de.visi0nary.app2system.Model.App;
+
 /**
  * Created by visi0nary on 19.05.15.
  * This class contains all data models and keeps them consistent
  */
 public class AppDataProvider {
 
-    protected ArrayList<ApplicationInfo> systemAppList;
-    protected ArrayList<String> systemAppNamesList;
-    protected ArrayList<ApplicationInfo> userAppList;
-    protected ArrayList<String> userAppNamesList;
+    protected ArrayList<App> systemAppList;
+    protected ArrayList<App> userAppList;
     protected MainActivity callingActivity;
     protected boolean listsPopulated = false;
 
@@ -26,25 +26,15 @@ public class AppDataProvider {
         this.callingActivity = (MainActivity)callingActivity;
         systemAppList = new ArrayList<>();
         userAppList = new ArrayList<>();
-        systemAppNamesList = new ArrayList<>();
-        userAppNamesList = new ArrayList<>();
     }
 
 
-    public ArrayList<ApplicationInfo> getSystemAppList() {
+    public ArrayList<App> getSystemAppList() {
         return systemAppList;
     }
 
-    public ArrayList<String> getSystemAppNamesList() {
-        return systemAppNamesList;
-    }
-
-    public ArrayList<ApplicationInfo> getUserAppList() {
+    public ArrayList<App> getUserAppList() {
         return userAppList;
-    }
-
-    public ArrayList<String> getUserAppNamesList() {
-        return userAppNamesList;
     }
 
     public void updateLists() {
@@ -63,8 +53,6 @@ public class AppDataProvider {
         public AppFetcherTask() {
             systemAppList = new ArrayList<>();
             userAppList = new ArrayList<>();
-            systemAppNamesList = new ArrayList<>();
-            userAppNamesList = new ArrayList<>();
             this.updateDialogHandler = new Handler();
         }
 
@@ -79,8 +67,6 @@ public class AppDataProvider {
             listsPopulated = false;
             systemAppList.clear();
             userAppList.clear();
-            systemAppNamesList.clear();
-            userAppNamesList.clear();
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -107,12 +93,14 @@ public class AppDataProvider {
             for (ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
                 // use human readable app name instead of package name
                 if (isSystemApp(appInfo)) {
-                    systemAppList.add(appInfo);
-                    systemAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
+                    systemAppList.add(new App(pm.getApplicationIcon(appInfo),
+                            pm.getApplicationLabel(appInfo).toString(),
+                            appInfo.sourceDir));
                     //once all lists are filled update both fragments and deliver fresh lists
                 } else {
-                    userAppList.add(appInfo);
-                    userAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
+                    userAppList.add(new App(pm.getApplicationIcon(appInfo),
+                            pm.getApplicationLabel(appInfo).toString(),
+                            appInfo.sourceDir));
                 }
                 appCount++;
             }
@@ -140,8 +128,8 @@ public class AppDataProvider {
         @Override
         protected void onPostExecute(Void voi) {
             super.onPostExecute(voi);
-            callingActivity.getPagerAdapter().updateUserApps(userAppList, userAppNamesList);
-            callingActivity.getPagerAdapter().updateSystemApps(systemAppList, systemAppNamesList);
+            callingActivity.getPagerAdapter().updateUserApps(userAppList);
+            callingActivity.getPagerAdapter().updateSystemApps(systemAppList);
         }
 
         protected boolean isSystemApp(ApplicationInfo appInfo) {

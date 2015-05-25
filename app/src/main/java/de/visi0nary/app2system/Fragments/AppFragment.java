@@ -17,6 +17,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 
 import de.visi0nary.app2system.MainActivity;
+import de.visi0nary.app2system.Model.App;
 import de.visi0nary.app2system.R;
 
 /**
@@ -35,7 +36,7 @@ public class AppFragment extends Fragment {
     }
 
 
-    private void moveApp(ApplicationInfo appInfo, int isUserApp, boolean isUndone) {
+    private void moveApp(App app, int isUserApp, boolean isUndone) {
         //method that moves the app with a simple shell command (mv)
         MainActivity activity = (MainActivity) getActivity();
         if(activity.isRootInitialized()) {
@@ -46,7 +47,7 @@ public class AppFragment extends Fragment {
                 writer.newLine();
                 writer.flush();
                 // move the app
-                String moveCommand = determineMoveCommand(appInfo, isUserApp);
+                String moveCommand = determineMoveCommand(app, isUserApp);
                 Log.i("output ", moveCommand);
                 writer.write(moveCommand);
                 writer.newLine();
@@ -55,24 +56,7 @@ public class AppFragment extends Fragment {
                 writer.write("mount -o remount,ro /system");
                 writer.newLine();
                 writer.flush();
-                if(isSystemApp(appInfo)) {
-
-                   }
-                else {
-                    /*if(!isUndone) {
-                        SnackbarManager.show(Snackbar.with(activity.getApplicationContext())
-                                .text(activity.getPackageManager().getApplicationLabel(appInfo).toString() + " moved to /system")
-                                .actionLabel("Undo")
-                                .actionListener(new ActionClickListener() {
-                                    @Override
-                                    public void onActionClicked(Snackbar snackbar) {
-                                        //moveApp(appInfo, 0, true);
-                                    }
-                                }));
-                    }*/
-                 }
-                //activity.getPagerAdapter().updateSystemApps();
-                //activity.getPagerAdapter().updateUserApps();
+                //TODO inplement undo method
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -84,10 +68,10 @@ public class AppFragment extends Fragment {
         return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
 
-    private String determineMoveCommand(ApplicationInfo appInfo, int isUserApp) {
+    private String determineMoveCommand(App app, int isUserApp) {
         // this method returns the move command (busybox mv *source* *destination*)
         StringBuilder finalCommandBuilder = new StringBuilder("busybox mv ");
-        String path = new String(appInfo.sourceDir);
+        String path = app.getPath();
         // thanks to Markus Heider for the idea of using split instead of a regex
         String[] splittedPath = path.split("/");
         StringBuilder pathBuilder = new StringBuilder();
