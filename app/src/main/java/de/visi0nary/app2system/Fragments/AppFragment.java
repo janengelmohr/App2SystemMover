@@ -71,7 +71,7 @@ public class AppFragment extends Fragment {
     private String determineMoveCommand(App app, int isUserApp) {
         // this method returns the move command (busybox mv *source* *destination*)
         StringBuilder finalCommandBuilder = new StringBuilder("busybox mv ");
-        String path = app.getPath();
+        String path = new String(app.getPath());
         // thanks to Markus Heider for the idea of using split instead of a regex
         String[] splittedPath = path.split("/");
         StringBuilder pathBuilder = new StringBuilder();
