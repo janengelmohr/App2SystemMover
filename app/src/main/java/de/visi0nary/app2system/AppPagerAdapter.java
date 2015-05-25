@@ -1,8 +1,11 @@
 package de.visi0nary.app2system;
 
+import android.content.pm.ApplicationInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import java.util.ArrayList;
 
 import de.visi0nary.app2system.Fragments.SystemAppFragment;
 import de.visi0nary.app2system.Fragments.UserAppFragment;
@@ -24,13 +27,13 @@ public class AppPagerAdapter extends FragmentStatePagerAdapter {
 
 
     //invokes an update of the user apps list
-    public void updateUserApps() {
-        this.userAppFragment.update();
+    public void updateUserApps(ArrayList<ApplicationInfo> apps, ArrayList<String> names) {
+        this.userAppFragment.update(apps, names);
     }
 
     //invokes an update of the system apps list
-    public void updateSystemApps() {
-        this.systemAppFragment.update();
+    public void updateSystemApps(ArrayList<ApplicationInfo> apps, ArrayList<String> names) {
+        this.systemAppFragment.update(apps, names);
     }
 
 

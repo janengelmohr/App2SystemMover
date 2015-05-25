@@ -109,6 +109,7 @@ public class AppDataProvider {
                 if (isSystemApp(appInfo)) {
                     systemAppList.add(appInfo);
                     systemAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
+                    //once all lists are filled update both fragments and deliver fresh lists
                 } else {
                     userAppList.add(appInfo);
                     userAppNamesList.add(pm.getApplicationLabel(appInfo).toString());
@@ -138,10 +139,9 @@ public class AppDataProvider {
 
         @Override
         protected void onPostExecute(Void voi) {
-            //once all lists are filled update both fragments and deliver fresh lists
-            callingActivity.getPagerAdapter().updateSystemApps();
-            callingActivity.getPagerAdapter().updateUserApps();
             super.onPostExecute(voi);
+            callingActivity.getPagerAdapter().updateUserApps(userAppList, userAppNamesList);
+            callingActivity.getPagerAdapter().updateSystemApps(systemAppList, systemAppNamesList);
         }
 
         protected boolean isSystemApp(ApplicationInfo appInfo) {

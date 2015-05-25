@@ -1,10 +1,15 @@
 package de.visi0nary.app2system.Fragments;
 
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import de.visi0nary.app2system.CustomListAdapter;
 import de.visi0nary.app2system.MainActivity;
@@ -16,30 +21,34 @@ import de.visi0nary.app2system.R;
  */
 public class SystemAppFragment extends AppFragment {
 
-    CustomListAdapter adapter = null;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
+        this.adapter = new CustomListAdapter(getActivity(), new ArrayList<ApplicationInfo>(), new ArrayList<String>());
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recylerview);
+
+        layoutManager = new LinearLayoutManager((getActivity()));
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
         return rootView;
     }
 
-    public void update() {
+    public void update(ArrayList<ApplicationInfo> apps, ArrayList<String> names) {
         //update list shown in this fragment
-        this.adapter = new CustomListAdapter(
-                getActivity().getApplicationContext(),
-                ((MainActivity)getActivity()).getDataProvider().getSystemAppList(),
-                ((MainActivity)getActivity()).getDataProvider().getSystemAppNamesList());
-        setListAdapter(adapter);
-        this.adapter.notifyDataSetChanged();
+        this.adapter = new CustomListAdapter(getActivity(), apps, names);
+        recyclerView.swapAdapter(adapter, false);
     }
 
     //this method implements the real functionality: if an app is clicked a pop up should appear
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.dialogFactory.create(0, getActivity(), id).show();
-    }
+ //   @Override
+ //   public void onListItemClick(ListView l, View v, int position, long id) {
+  //      super.dialogFactory.create(0, getActivity(), id).show();
+ //   }
 
 
 

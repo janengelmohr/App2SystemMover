@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import de.visi0nary.app2system.R;
  * Created by visi0nary on 04.05.15.
  * This class holds all methods that both SystemAppFragment and UserAppFragment use
  */
-public class AppFragment extends ListFragment {
+public class AppFragment extends Fragment {
 
     protected MoveAlertDialogFactory dialogFactory = new MoveAlertDialogFactory();
 
@@ -55,23 +56,8 @@ public class AppFragment extends ListFragment {
                 writer.newLine();
                 writer.flush();
                 if(isSystemApp(appInfo)) {
-                    //TODO add snackbar to revert action
-                   /* if(!isUndone) {
-                        SnackbarManager.show(Snackbar.with(activity.getApplicationContext())
-                                .text(activity.getPackageManager().getApplicationLabel(appInfo).toString() + " moved to /data")
-                                .actionLabel("Undo")
-                                .actionListener(new ActionClickListener() {
-                                    @Override
-                                    public void onActionClicked(Snackbar snackbar) {
-                                        //moveApp(appInfo, 1, true);
-                                    }
-                                }));
-                    }*/
-                    activity.getDataProvider().getSystemAppList().remove(appInfo);
-                    activity.getDataProvider().getSystemAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
-                    activity.getDataProvider().getUserAppList().add(appInfo);
-                    activity.getDataProvider().getUserAppNamesList().add(activity.getPackageManager().getApplicationLabel(appInfo).toString());
-                }
+
+                   }
                 else {
                     /*if(!isUndone) {
                         SnackbarManager.show(Snackbar.with(activity.getApplicationContext())
@@ -84,14 +70,9 @@ public class AppFragment extends ListFragment {
                                     }
                                 }));
                     }*/
-                    Toast.makeText(getActivity().getApplicationContext(), activity.getPackageManager().getApplicationLabel(appInfo).toString() + " successfully moved to /system!", Toast.LENGTH_LONG).show();
-                    activity.getDataProvider().getUserAppList().remove(appInfo);
-                    activity.getDataProvider().getUserAppNamesList().remove(activity.getPackageManager().getApplicationLabel(appInfo).toString());
-                    activity.getDataProvider().getSystemAppList().add(appInfo);
-                    activity.getDataProvider().getSystemAppNamesList().add(activity.getPackageManager().getApplicationLabel(appInfo).toString());
-                }
-                activity.getPagerAdapter().updateSystemApps();
-                activity.getPagerAdapter().updateUserApps();
+                 }
+                //activity.getPagerAdapter().updateSystemApps();
+                //activity.getPagerAdapter().updateUserApps();
             } catch (IOException e) {
                 e.printStackTrace();
             }

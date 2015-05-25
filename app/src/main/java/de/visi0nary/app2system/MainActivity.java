@@ -3,6 +3,7 @@ package de.visi0nary.app2system;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,26 +31,26 @@ public class MainActivity extends AppCompatActivity {
     private boolean rootInitialized;
     private AppDataProvider dataProvider;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.dataProvider = new AppDataProvider(this);
-        dataProvider.updateLists();
 
+        //set up the toolbar which is used for material design
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //set pager adapter, which is responsible for populating the activity with fragments
         pagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
-        //initialize fragments in view pager
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
         //set first page on startup to avoid viewing the setting page on every startup
         viewPager.setCurrentItem(0);
 
+        //set tabs layout used for material design
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);
         tabs.setDistributeEvenly(true);
-
         // Setting Custom Color for the Scroll bar indicator of the Tab View
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tabs.setViewPager(viewPager);
+        this.dataProvider = new AppDataProvider(this);
+        dataProvider.updateLists();
     }
 
     @Override
