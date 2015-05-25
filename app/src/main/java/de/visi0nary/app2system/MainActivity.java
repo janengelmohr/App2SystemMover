@@ -3,6 +3,8 @@ package de.visi0nary.app2system;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -13,13 +15,17 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private AppPagerAdapter pagerAdapter;
     private ViewPager viewPager;
+    private Toolbar toolbar;
+    private SlidingTabLayout tabs;
+
     private Process suProcess = null;
     private DataOutputStream stdin = null;
     private BufferedWriter writer = null;
+
     private boolean rootInitialized;
     private AppDataProvider dataProvider;
 
@@ -30,12 +36,27 @@ public class MainActivity extends Activity {
         this.dataProvider = new AppDataProvider(this);
         dataProvider.updateLists();
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        pagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
         //initialize fragments in view pager
         viewPager = (ViewPager) findViewById(R.id.pager);
-        pagerAdapter = new AppPagerAdapter(getFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         //set first page on startup to avoid viewing the setting page on every startup
         viewPager.setCurrentItem(0);
+
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true);
+
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+        tabs.setViewPager(viewPager);
     }
 
     @Override
