@@ -32,10 +32,19 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         public TextView text;
         public ImageView icon;
 
+
+
+        public View view;
+
         public ViewHolder(View itemView) {
             super(itemView);
             this.text = (TextView) itemView.findViewById(R.id.label);
             this.icon = (ImageView) itemView.findViewById(R.id.icon);
+            this.view = itemView;
+        }
+
+        public View getView() {
+            return view;
         }
     }
 
@@ -75,7 +84,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         final App app = apps.get(position);
         viewHolder.text.setText(name);
         viewHolder.icon.setImageDrawable((apps.get(position).getIcon()));
-        viewHolder.text.setOnClickListener(new View.OnClickListener() {
+        viewHolder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createPopup(app);
