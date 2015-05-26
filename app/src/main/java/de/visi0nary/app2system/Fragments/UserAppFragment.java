@@ -1,6 +1,5 @@
 package de.visi0nary.app2system.Fragments;
 
-import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,11 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import de.visi0nary.app2system.CustomListAdapter;
+import de.visi0nary.app2system.Adapters.CustomListAdapter;
 import de.visi0nary.app2system.MainActivity;
 import de.visi0nary.app2system.Model.App;
 import de.visi0nary.app2system.R;

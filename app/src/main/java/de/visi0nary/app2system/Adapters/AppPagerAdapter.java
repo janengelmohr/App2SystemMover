@@ -1,4 +1,4 @@
-package de.visi0nary.app2system;
+package de.visi0nary.app2system.Adapters;
 
 import android.content.pm.ApplicationInfo;
 import android.support.v4.app.Fragment;

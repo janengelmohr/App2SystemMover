@@ -1,8 +1,7 @@
-package de.visi0nary.app2system;
+package de.visi0nary.app2system.Adapters;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import de.visi0nary.app2system.MainActivity;
 import de.visi0nary.app2system.Model.App;
+import de.visi0nary.app2system.R;
 
 /**
  * Created by visi0nary on 13.05.15.
@@ -107,6 +109,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                 writer.newLine();
                 writer.flush();
                 removeItem(app);
+                Toast.makeText(context, app.getHumanReadableName() + " has successfully been moved!", Toast.LENGTH_SHORT).show();
                 //TODO inplement undo method
             } catch (IOException e) {
                 e.printStackTrace();

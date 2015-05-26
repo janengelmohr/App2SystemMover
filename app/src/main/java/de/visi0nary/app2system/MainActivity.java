@@ -3,7 +3,6 @@ package de.visi0nary.app2system;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import de.visi0nary.app2system.Adapters.AppPagerAdapter;
 import de.visi0nary.app2system.external.SlidingTabLayout;
 
 
