@@ -2,6 +2,7 @@ package de.visi0nary.app2system.Fragments;
 
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,10 +21,10 @@ import de.visi0nary.app2system.R;
  * Created by visi0nary on 03.05.15.
  * This fragment shows all installed user apps in a list view
  */
-public class UserAppFragment extends AppFragment {
+public class UserAppFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private CustomListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -41,8 +42,7 @@ public class UserAppFragment extends AppFragment {
 
     public void update(ArrayList<App> apps) {
         //update list shown in this fragment
-        this.adapter = new CustomListAdapter(apps, (MainActivity)getActivity());
-        recyclerView.swapAdapter(adapter, false);
+        this.adapter.refreshItems(apps);
     }
 
 }
