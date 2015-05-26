@@ -95,12 +95,12 @@ public class AppDataProvider {
                 if (isSystemApp(appInfo)) {
                     systemAppList.add(new App(pm.getApplicationIcon(appInfo),
                             pm.getApplicationLabel(appInfo).toString(),
-                            appInfo.sourceDir));
+                            appInfo.sourceDir, isSystemApp(appInfo)));
                     //once all lists are filled update both fragments and deliver fresh lists
                 } else {
                     userAppList.add(new App(pm.getApplicationIcon(appInfo),
                             pm.getApplicationLabel(appInfo).toString(),
-                            appInfo.sourceDir));
+                            appInfo.sourceDir, isSystemApp(appInfo)));
                 }
                 appCount++;
             }

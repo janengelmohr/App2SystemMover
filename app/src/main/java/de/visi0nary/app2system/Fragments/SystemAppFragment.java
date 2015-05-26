@@ -30,7 +30,7 @@ public class SystemAppFragment extends AppFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_applist, container, false);
-        this.adapter = new CustomListAdapter(new ArrayList<App>());
+        this.adapter = new CustomListAdapter(new ArrayList<App>(), (MainActivity)getActivity());
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recylerview);
 
         layoutManager = new LinearLayoutManager((getActivity()));
@@ -41,16 +41,8 @@ public class SystemAppFragment extends AppFragment {
 
     public void update(ArrayList<App> apps) {
         //update list shown in this fragment
-        this.adapter = new CustomListAdapter(apps);
+        this.adapter = new CustomListAdapter(apps, (MainActivity)getActivity());
         recyclerView.swapAdapter(adapter, false);
     }
-
-    //this method implements the real functionality: if an app is clicked a pop up should appear
- //   @Override
- //   public void onListItemClick(ListView l, View v, int position, long id) {
-  //      super.dialogFactory.create(0, getActivity(), id).show();
- //   }
-
-
 
 }

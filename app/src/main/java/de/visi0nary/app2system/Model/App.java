@@ -8,11 +8,16 @@ import android.graphics.drawable.Drawable;
 public class App {
 
 
-    Drawable icon;
-    String humanReadableName;
-    String installationPath;
+    private Drawable icon;
+    private String humanReadableName;
+    private String installationPath;
 
-    public App(Drawable icon, String humanReadableName, String installationPath) {
+
+
+
+    private boolean isSystemApp;
+
+    public App(Drawable icon, String humanReadableName, String installationPath, boolean isSystemApp) {
         this.icon = icon;
         this.humanReadableName = humanReadableName;
         this.installationPath = installationPath;
@@ -33,6 +38,14 @@ public class App {
 
     public void setHumanReadableName(String humanReadableName) {
         this.humanReadableName = humanReadableName;
+    }
+
+    public void setIsSystemApp(boolean isSystemApp) {
+        this.isSystemApp = isSystemApp;
+    }
+
+    public boolean isSystemApp() {
+        return isSystemApp;
     }
 
     public String getPath() {
