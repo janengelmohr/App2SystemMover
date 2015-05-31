@@ -2,6 +2,8 @@ package de.visi0nary.app2system.Adapters;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 import de.visi0nary.app2system.MainActivity;
 import de.visi0nary.app2system.Model.App;
 import de.visi0nary.app2system.R;
+import de.visi0nary.app2system.Settings.AdvancedSettingsFragment;
+import de.visi0nary.app2system.Settings.SettingsActivity;
 
 /**
  * Created by visi0nary on 13.05.15.
@@ -26,6 +30,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
 
     private ArrayList<App> apps;
     private MainActivity context;
+    public SharedPreferences sharedPrefs;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -51,6 +56,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     public CustomListAdapter(ArrayList<App> apps, MainActivity context) {
         this.apps = apps;
         this.context = context;
+        this.sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void refreshItems(ArrayList<App> apps) {
@@ -87,7 +93,14 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         viewHolder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createPopup(app);
+                if(sharedPrefs.getBoolean("pref_batch_mode", false)) {
+                    //if the batch mode is enabled, just move the app
+                    moveApp(app);
+                }
+                else {
+                    //...otherwise prompt the user with a confirmation popup (default behaviour)
+                    createPopup(app);
+                }
             }
         });
     }
