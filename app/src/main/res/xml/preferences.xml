@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+   <PreferenceCategory
+        android:title="@string/pref_general"
+        android:key="pref_general_settings">
+
+
+        <Preference
+            android:key="pref_save_state"
+            android:title="@string/pref_state_saver"
+            android:summary="@string/pref_description_state_saver"
+            android:defaultValue="false" />
+
+        <Preference
+            android:key="pref_save_restore"
+            android:title="@string/pref_state_restorer"
+            android:summary="@string/pref_description_state_restorer"
+            android:defaultValue="false">
+        </Preference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_advanced"
+        android:key="pref_advanced_settings">
+
+    <CheckBoxPreference
+        android:key="pref_batch_mode"
+        android:title="@string/pref_unsafe_mode"
+        android:summary="@string/pref_description_unsafe_mode"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="pref_show_core_apps"
+        android:title="@string/pref_core_apps"
+        android:summary="@string/pref_description_core"
+        android:defaultValue="false" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

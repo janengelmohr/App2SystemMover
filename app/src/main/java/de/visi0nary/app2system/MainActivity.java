@@ -1,5 +1,6 @@
 package de.visi0nary.app2system;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import de.visi0nary.app2system.Adapters.AppPagerAdapter;
+import de.visi0nary.app2system.Settings.SettingsActivity;
 import de.visi0nary.app2system.external.SlidingTabLayout;
 
 
@@ -218,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

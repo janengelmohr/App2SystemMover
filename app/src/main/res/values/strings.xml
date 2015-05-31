@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">App2/system</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="txt_userapps_headline">User Apps</string>
     <string name="txt_systemapps_headline">System Apps</string>
@@ -13,4 +12,7 @@
     <string name="txt_error_creating_dialog">Something went wrong while creating the dialog. Please report this error to me!</string>
     <string name="txt_error_creating_dialog_headline">meh...</string>
     <string name="action_search">Search</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
 </resources>
