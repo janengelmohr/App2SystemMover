@@ -1,7 +1,11 @@
 package de.visi0nary.app2system;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean rootInitialized;
     private AppDataProvider dataProvider;
+
+    // this flag indicates whether the user has already moved at least one app
+    private boolean appsAreDirty = false;
 
 
     @Override
@@ -74,15 +81,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         stopRoot();
+        if(appsAreDirty) {
+            createRestartNotification();
+        }
         super.onPause();
+    }
+
+    public void setDirtyState() {
+        this.appsAreDirty = true;
+    }
+
+
+    private void createRestartNotification() {
+        //TODO create notification that warns user that he should reboot
+        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this);
+        Intent rebootIntent = new Intent(this, RebootActivity.class);
+        PendingIntent pendingRebootIntent = PendingIntent.getActivity(this, 0, rebootIntent, 0);
+        nBuilder.setSmallIcon(android.R.drawable.ic_delete).setContentTitle("App2/system")
+                .setContentText("It is mandatory to reboot the device after apps have been moved.")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("It is mandatory to reboot the device after apps have been moved."))
+                .addAction(android.R.drawable.ic_dialog_alert, "Reboot now", pendingRebootIntent);
+
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(281291, nBuilder.build());
     }
 
     public AppPagerAdapter getPagerAdapter() {
         return pagerAdapter;
-    }
-
-    public AppDataProvider getDataProvider() {
-        return dataProvider;
     }
 
     private void stopRoot() {

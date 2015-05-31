@@ -14,5 +14,8 @@
     <string name="action_search">Search</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_reboot">RebootActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

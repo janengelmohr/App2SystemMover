@@ -1,9 +1,13 @@
 package de.visi0nary.app2system.Adapters;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -132,7 +136,8 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                 writer.flush();
                 removeItem(app);
                 Toast.makeText(context, app.getHumanReadableName() + " has successfully been moved!", Toast.LENGTH_SHORT).show();
-                //TODO inplement undo method
+                context.setDirtyState();
+                 //TODO inplement undo method
             } catch (IOException e) {
                 e.printStackTrace();
             }

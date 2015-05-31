@@ -27,6 +27,10 @@
             android:name=".Settings.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name=".RebootActivity"
+            android:label="@string/title_activity_reboot" >
+        </activity>
     </application>
 
 </manifest>
