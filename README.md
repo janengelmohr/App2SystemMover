@@ -5,4 +5,6 @@ TODO:
 
 -> implement undo functionality
 
--> add settings page
+-> implement "dangerous mode"
+
+-> implement "ROM mode"
