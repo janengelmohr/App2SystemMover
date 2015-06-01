@@ -20,10 +20,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Views.AboutActivity"
-            android:label="@string/title_activity_about" >
-        </activity>
-        <activity
             android:name=".Settings.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
@@ -31,6 +27,11 @@
             android:name=".RebootActivity"
             android:label="@string/title_activity_reboot" >
         </activity>
+
+        <service
+            android:name=".SaveCurrentAppLayoutService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

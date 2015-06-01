@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-  <!-- <PreferenceCategory
+  <PreferenceCategory
         android:title="@string/pref_general"
         android:key="pref_general_settings">
 
-//TODO implement this
         <Preference
             android:key="pref_save_state"
             android:title="@string/pref_state_saver"
-            android:summary="@string/pref_description_state_saver"
-            android:defaultValue="false" />
+            android:summary="@string/pref_description_state_saver">
+        </Preference>
 
         <Preference
             android:key="pref_save_restore"
             android:title="@string/pref_state_restorer"
-            android:summary="@string/pref_description_state_restorer"
-            android:defaultValue="false">
+            android:summary="@string/pref_description_state_restorer">
         </Preference>
 
-    </PreferenceCategory> -->
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/pref_advanced"
