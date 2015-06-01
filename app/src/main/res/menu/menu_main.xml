@@ -3,12 +3,5 @@
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:icon="@android:drawable/ic_dialog_dialer"
-        android:orderInCategory="100"
-        android:showAsAction="always" />
-    <!-- Search, should appear as action button -->
-    <item android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_dialog_info"
-        android:title="@string/action_search"
-        android:showAsAction="ifRoom" />
-
+        android:orderInCategory="100" />
 </menu>

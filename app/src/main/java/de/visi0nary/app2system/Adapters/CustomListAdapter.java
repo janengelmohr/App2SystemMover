@@ -1,13 +1,9 @@
 package de.visi0nary.app2system.Adapters;
 
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,8 +20,6 @@ import java.util.ArrayList;
 import de.visi0nary.app2system.MainActivity;
 import de.visi0nary.app2system.Model.App;
 import de.visi0nary.app2system.R;
-import de.visi0nary.app2system.Settings.AdvancedSettingsFragment;
-import de.visi0nary.app2system.Settings.SettingsActivity;
 
 /**
  * Created by visi0nary on 13.05.15.
@@ -81,7 +75,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
 
     @Override
     public CustomListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.singleentrylayout, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.applist_singleentrylayout, viewGroup, false);
 
         return new ViewHolder(view);
     }

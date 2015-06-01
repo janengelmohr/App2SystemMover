@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-   <PreferenceCategory
+  <!-- <PreferenceCategory
         android:title="@string/pref_general"
         android:key="pref_general_settings">
 
-
+//TODO implement this
         <Preference
             android:key="pref_save_state"
             android:title="@string/pref_state_saver"
@@ -18,7 +18,7 @@
             android:defaultValue="false">
         </Preference>
 
-    </PreferenceCategory>
+    </PreferenceCategory> -->
 
     <PreferenceCategory
         android:title="@string/pref_advanced"
@@ -30,11 +30,29 @@
         android:summary="@string/pref_description_unsafe_mode"
         android:defaultValue="false" />
 
+   <!-- TODO implement this
     <CheckBoxPreference
         android:key="pref_show_core_apps"
         android:title="@string/pref_core_apps"
         android:summary="@string/pref_description_core"
-        android:defaultValue="false" />
+        android:defaultValue="false" /> -->
 
     </PreferenceCategory>
+
+
+<PreferenceCategory
+android:title="@string/pref_about_me"
+android:key="pref_about_me">
+
+<Preference
+    android:key="pref_github"
+    android:title="@string/txt_github"/>
+
+<Preference
+    android:key="txt_blog"
+    android:title="@string/txt_myblog"
+    android:summary="@string/txt_description_myblog"/>
+
+</PreferenceCategory>
+
 </PreferenceScreen>

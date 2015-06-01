@@ -5,6 +5,6 @@ TODO:
 
 -> implement undo functionality
 
--> implement "dangerous mode"
+-> implement "dangerous mode" which let's the user move really basic apps (e.g. phone, etc)
 
 -> implement "ROM mode"

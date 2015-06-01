@@ -11,11 +11,14 @@
     <string name="btn_cancel">Cancel</string>
     <string name="txt_error_creating_dialog">Something went wrong while creating the dialog. Please report this error to me!</string>
     <string name="txt_error_creating_dialog_headline">meh...</string>
-    <string name="action_search">Search</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_reboot">RebootActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="pref_about_me">About</string>
+    <string name="txt_github">Visit me on GitHub.</string>
+    <string name="txt_myblog">visi0nary.de</string>
+    <string name="txt_description_myblog">My little blog :)</string>
 
 </resources>
