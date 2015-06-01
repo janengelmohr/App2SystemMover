@@ -46,12 +46,20 @@ android:key="pref_about_me">
 
 <Preference
     android:key="pref_github"
-    android:title="@string/txt_github"/>
+    android:title="@string/txt_github">
+    <intent
+        android:action="android.intent.action.VIEW"
+        android:data="https://github.com/visi0nary" />
+    </Preference>
 
 <Preference
     android:key="txt_blog"
     android:title="@string/txt_myblog"
-    android:summary="@string/txt_description_myblog"/>
+    android:summary="@string/txt_description_myblog">
+    <intent
+        android:action="android.intent.action.VIEW"
+        android:data="http://visi0nary.de" />
+    </Preference>
 
 </PreferenceCategory>
 
