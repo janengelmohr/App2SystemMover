@@ -29,9 +29,15 @@
         </activity>
 
         <service
-            android:name=".SaveCurrentAppLayoutService"
+            android:name=".AppDataService"
             android:exported="false" >
         </service>
+
+        <receiver
+            android:name=".AppResultReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
     </application>
 
 </manifest>

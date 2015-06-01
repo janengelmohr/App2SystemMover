@@ -2,9 +2,14 @@ package de.visi0nary.app2system;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
+import android.provider.SyncStateContract;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private BufferedWriter writer = null;
 
     private boolean rootInitialized;
-    private AppDataProvider dataProvider;
+    private AppDataService dataProvider;
 
     // this flag indicates whether the user has already moved at least one app
     private boolean appsAreDirty = false;
@@ -46,31 +51,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //set up the toolbar which is used for material design
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        populateView();
 
-        //set pager adapter, which is responsible for populating the activity with fragments
-        pagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setAdapter(pagerAdapter);
-        //set first page on startup to avoid viewing the setting page on every startup
-        viewPager.setCurrentItem(0);
-
-        //set tabs layout used for material design
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
-        tabs.setDistributeEvenly(true);
-        // Setting Custom Color for the Scroll bar indicator of the Tab View
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.tabsScrollColor);
-            }
-        });
-        tabs.setViewPager(viewPager);
-        this.dataProvider = new AppDataProvider(this);
-        dataProvider.updateLists();
+        Intent intent = new Intent(this, AppDataService.class);
+        intent.setAction(AppDataService.ACTION_REFRESH_APPS);
+        intent.putExtra("receiver", new AppResultReceiver(new Handler()));
+        startService(intent);
     }
+
 
     @Override
     public void onResume() {
@@ -122,6 +110,31 @@ public class MainActivity extends AppCompatActivity {
                 suProcess.destroy();
             }
         }
+    }
+
+    private void populateView() {
+        //set up the toolbar which is used for material design
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //set pager adapter, which is responsible for populating the activity with fragments
+        pagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(pagerAdapter);
+        //set first page on startup to avoid viewing the setting page on every startup
+        viewPager.setCurrentItem(0);
+
+        //set tabs layout used for material design
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true);
+        // Setting Custom Color for the Scroll bar indicator of the Tab View
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.tabsScrollColor);
+            }
+        });
+        tabs.setViewPager(viewPager);
     }
 
     private void initializeRoot(){
@@ -250,5 +263,38 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class AppResultReceiver extends ResultReceiver {
+
+        //show a nice dialog while the processing is done so the user can see what's going on
+        ProgressDialog dialog;
+
+        public AppResultReceiver(Handler handler) {
+            super(handler);
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setTitle("Updating app list");
+            dialog.setMessage("Please wait while all installed apps are fetched.");
+            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            dialog.setProgress(0);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            //set max to the number of available apps
+            dialog.setMax(getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA).size());
+            dialog.show();
+        }
+
+        @Override
+        public void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            if(resultCode == 0) {
+                dialog.setProgress(resultData.getInt("progress"));
+            }
+            else if(resultCode == 1) {
+                dialog.dismiss();
+                //getPagerAdapter().updateSystemApps(resultData.getParcelableArrayList("systemapps"));
+                resultData.getParcelableArrayList("userapps");
+            }
+        }
     }
 }
