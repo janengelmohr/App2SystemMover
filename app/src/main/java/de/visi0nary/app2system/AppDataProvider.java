@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.visi0nary.app2system.Model.App;
 
@@ -63,10 +64,10 @@ public class AppDataProvider {
             PackageManager pm = callingActivity.getPackageManager();
 
             //do the heavy work here (aka filling all lists)
-            //an asynctask will be started for each list
             listsPopulated = false;
             systemAppList.clear();
             userAppList.clear();
+            //thread to show the dialog while apps are fetched
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -76,10 +77,14 @@ public class AppDataProvider {
                             updateDialogHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    //update the app fetching dialog
                                     dialog.setProgress(appCount);
                                 }
                             });
                             if(dialog.getProgress()>=dialog.getMax()) {
+                                //sort lists alphabetically
+                                Collections.sort(systemAppList);
+                                Collections.sort(userAppList);
                                 dialog.dismiss();
                                 appCount = 0;
                             }

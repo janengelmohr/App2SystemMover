@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by visi0nary on 25.05.15.
  */
-public class App {
+public class App implements Comparable<App> {
 
 
     private Drawable icon;
@@ -54,5 +54,11 @@ public class App {
 
     public void setPath(String installationPath) {
         this.installationPath = installationPath;
+    }
+
+    @Override
+    public int compareTo(App app) {
+        //compare human readable names to ensure lexicographical ordering
+        return(this.getHumanReadableName().compareTo(app.getHumanReadableName()));
     }
 }
