@@ -1,18 +1,19 @@
 package de.visi0nary.app2system.Model;
 
 import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Created by visi0nary on 25.05.15.
  */
-public class App implements Comparable<App>, Parcelable {
+public class App implements Comparable<App> {
 
 
     private Drawable icon;
     private String humanReadableName;
     private String installationPath;
+
+
+
 
     private boolean isSystemApp;
 
@@ -59,15 +60,5 @@ public class App implements Comparable<App>, Parcelable {
     public int compareTo(App app) {
         //compare human readable names to ensure lexicographical ordering
         return(this.getHumanReadableName().compareTo(app.getHumanReadableName()));
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-
     }
 }
