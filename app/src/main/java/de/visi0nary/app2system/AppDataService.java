@@ -38,26 +38,6 @@ public class AppDataService extends IntentService {
         super("AppDataService");
     }
 
-
-    public static void saveAppLayout(Context context) {
-        Intent intent = new Intent(context, AppDataService.class);
-        intent.setAction(ACTION_SAVE_APPS);
-        context.startService(intent);
-    }
-
-    public static void restoreAppLayout(Context context) {
-        Intent intent = new Intent(context, AppDataService.class);
-        intent.setAction(ACTION_RESTORE_APPS);
-        context.startService(intent);
-    }
-
-    public static void refreshApp(Context context) {
-        Intent intent = new Intent(context, AppDataService.class);
-        intent.setAction(ACTION_REFRESH_APPS);
-        context.startService(intent);
-    }
-
-
     public ArrayList<App> getSystemAppList() {
         return systemAppList;
     }
@@ -127,7 +107,6 @@ public class AppDataService extends IntentService {
         data.putParcelableArrayList("systemapps", systemAppList);
         receiver.send(1, data);
 
-        //TODO send a broadcast to activity to update app lists
     }
 
     protected boolean isSystemApp(ApplicationInfo appInfo) {
