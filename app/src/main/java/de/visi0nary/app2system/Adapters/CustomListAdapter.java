@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,6 +71,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     public void removeItem(App item) {
         int position = apps.indexOf(item);
         apps.remove(item);
+
         notifyItemRemoved(position);
     }
 
@@ -129,7 +131,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                 writer.newLine();
                 writer.flush();
                 removeItem(app);
-                Toast.makeText(context, app.getHumanReadableName() + " has successfully been moved!", Toast.LENGTH_SHORT).show();
                 context.setDirtyState();
                  //TODO inplement undo method
             } catch (IOException e) {
@@ -219,7 +220,4 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
             }
             alertDialogBuilder.create().show();
         }
-
-
-    //TODO: implement adapter sorting logic
 }
