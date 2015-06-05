@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+//currently using nispok's snackbar implementation in favor of the official because it can hold an onDisposeListener
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
+import com.nispok.snackbar.listeners.ActionClickListener;
+import com.nispok.snackbar.listeners.EventListener;
+import com.nispok.snackbar.listeners.EventListenerAdapter;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -69,9 +74,8 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     }
 
     public void removeItem(App item) {
-        int position = apps.indexOf(item);
+        final int position = apps.indexOf(item);
         apps.remove(item);
-
         notifyItemRemoved(position);
     }
 
@@ -93,13 +97,12 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         viewHolder.getView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sharedPrefs.getBoolean("pref_batch_mode", false)) {
+                if (sharedPrefs.getBoolean("pref_batch_mode", false)) {
                     //if the batch mode is enabled, just move the app
-                    moveApp(app);
-                }
-                else {
+                    showSnackbar(app, v);
+                } else {
                     //...otherwise prompt the user with a confirmation popup (default behaviour)
-                    createPopup(app);
+                    createPopup(app, v);
                 }
             }
         });
@@ -130,7 +133,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                 writer.write("mount -o remount,ro /system");
                 writer.newLine();
                 writer.flush();
-                removeItem(app);
                 context.setDirtyState();
                  //TODO inplement undo method
             } catch (IOException e) {
@@ -156,15 +158,50 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         } else {
             targetPath = pathBuilder.toString().replace("data", "system");
         }
+        //invert target path and system app state
+        app.setPath(targetPath);
+        app.setIsSystemApp(!app.isSystemApp());
         finalCommandBuilder.append(" " + targetPath);
+        Log.i("Final command", finalCommandBuilder.toString());
 
         return finalCommandBuilder.toString();
     }
 
+    private boolean snackBarClicked = false;
+    public void showSnackbar(final App app, View view) {
+        final int position = apps.indexOf(app);
 
-        public void createPopup(App app) {
+        removeItem(app);
+
+        // show undo-snackbar
+        SnackbarManager.show(Snackbar.with(context).text("App successfully moved.").actionLabel("Undo")
+                .actionListener(new ActionClickListener() {
+                    @Override
+                    public void onActionClicked(Snackbar snackbar) {
+                        snackBarClicked = true;
+                    }
+                }).eventListener(new EventListenerAdapter() {
+        @Override
+            public void onDismissed(Snackbar snackbar) {
+                if(!snackBarClicked) {
+                    //moveApp(app);
+                    Log.i("snackbar", "snackbar not clicked, will move.");
+                }
+                else {
+                    addItem(position, app);
+                    snackBarClicked = false;
+                    Log.i("snackbar", "snackbar clicked, will revert and do nothing");
+                }
+            }
+        }), context);
+
+    }
+
+
+    public void createPopup(App app, View v) {
 
             final App tempApp = app;
+            final View fV = v;
             int isUserApp = app.isSystemApp() ? 1 : 0;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             switch (isUserApp) {
@@ -176,7 +213,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
-                            moveApp(tempApp);
+                            showSnackbar(tempApp, fV);
                         }
                     });
 
@@ -195,7 +232,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //user clicked ok
-                            moveApp(tempApp);
+                            showSnackbar(tempApp, fV);
                         }
                     });
 

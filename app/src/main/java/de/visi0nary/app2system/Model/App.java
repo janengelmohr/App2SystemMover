@@ -11,10 +11,6 @@ public class App implements Comparable<App> {
     private Drawable icon;
     private String humanReadableName;
     private String installationPath;
-
-
-
-
     private boolean isSystemApp;
 
     public App(Drawable icon, String humanReadableName, String installationPath, boolean isSystemApp) {
@@ -55,6 +51,7 @@ public class App implements Comparable<App> {
     public void setPath(String installationPath) {
         this.installationPath = installationPath;
     }
+
 
     @Override
     public int compareTo(App app) {
