@@ -36,10 +36,6 @@ public class App implements Comparable<App> {
         this.humanReadableName = humanReadableName;
     }
 
-    public void setIsSystemApp(boolean isSystemApp) {
-        this.isSystemApp = isSystemApp;
-    }
-
     public boolean isSystemApp() {
         return isSystemApp;
     }

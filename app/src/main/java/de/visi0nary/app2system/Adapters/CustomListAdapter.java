@@ -158,9 +158,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         } else {
             targetPath = pathBuilder.toString().replace("data", "system");
         }
-        //invert target path and system app state
-        app.setPath(targetPath);
-        app.setIsSystemApp(!app.isSystemApp());
         finalCommandBuilder.append(" " + targetPath);
         Log.i("Final command", finalCommandBuilder.toString());
 
@@ -200,6 +197,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
 
     public void createPopup(App app, View v) {
 
+            //these are final because DialogInterface.OnClickListener is an inner class
             final App tempApp = app;
             final View fV = v;
             int isUserApp = app.isSystemApp() ? 1 : 0;
