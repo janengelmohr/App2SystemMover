@@ -57,8 +57,6 @@ public class AppDataProvider {
             this.updateDialogHandler = new Handler();
         }
 
-
-
         @Override
         protected Void doInBackground(Void... voids) {
             PackageManager pm = callingActivity.getPackageManager();

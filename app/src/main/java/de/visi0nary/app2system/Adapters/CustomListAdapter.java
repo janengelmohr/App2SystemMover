@@ -134,7 +134,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                 writer.newLine();
                 writer.flush();
                 context.setDirtyState();
-                 //TODO inplement undo method
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -182,21 +181,17 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
             public void onDismiss(Snackbar snackbar) {
                 if(!snackBarClicked) {
                     moveApp(app);
-                    //Log.i("snackbar", "snackbar not clicked, will move.");
                 }
                 else {
                     addItem(position, app);
                     snackBarClicked = false;
-                    //Log.i("snackbar", "snackbar clicked, will revert and do nothing");
                 }
             }
         }), context);
 
     }
 
-
     public void createPopup(App app, View v) {
-
             //these are final because DialogInterface.OnClickListener is an inner class
             final App tempApp = app;
             final View fV = v;
