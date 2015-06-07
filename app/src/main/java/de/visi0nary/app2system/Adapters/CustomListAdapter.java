@@ -167,12 +167,12 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         return finalCommandBuilder.toString();
     }
 
+    //TODO fix move command again (moves whole folder sometimes)
+
     private boolean snackBarClicked = false;
     public void showSnackbar(final App app, View view) {
         final int position = apps.indexOf(app);
-
         removeItem(app);
-
         // show undo-snackbar
         SnackbarManager.show(Snackbar.with(context).text("App successfully moved.").actionLabel("Undo")
                 .actionListener(new ActionClickListener() {
@@ -182,15 +182,15 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                     }
                 }).eventListener(new EventListenerAdapter() {
         @Override
-            public void onDismissed(Snackbar snackbar) {
+            public void onDismiss(Snackbar snackbar) {
                 if(!snackBarClicked) {
-                    //moveApp(app);
-                    Log.i("snackbar", "snackbar not clicked, will move.");
+                    moveApp(app);
+                    //Log.i("snackbar", "snackbar not clicked, will move.");
                 }
                 else {
                     addItem(position, app);
                     snackBarClicked = false;
-                    Log.i("snackbar", "snackbar clicked, will revert and do nothing");
+                    //Log.i("snackbar", "snackbar clicked, will revert and do nothing");
                 }
             }
         }), context);
