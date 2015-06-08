@@ -17,6 +17,7 @@ public class App implements Comparable<App> {
         this.icon = icon;
         this.humanReadableName = humanReadableName;
         this.installationPath = installationPath;
+        this.isSystemApp = isSystemApp;
     }
 
 
@@ -24,16 +25,8 @@ public class App implements Comparable<App> {
         return icon;
     }
 
-    public void setIcon(Drawable icon) {
-        this.icon = icon;
-    }
-
     public String getHumanReadableName() {
         return humanReadableName;
-    }
-
-    public void setHumanReadableName(String humanReadableName) {
-        this.humanReadableName = humanReadableName;
     }
 
     public boolean isSystemApp() {
@@ -42,10 +35,6 @@ public class App implements Comparable<App> {
 
     public String getPath() {
         return installationPath;
-    }
-
-    public void setPath(String installationPath) {
-        this.installationPath = installationPath;
     }
 
 

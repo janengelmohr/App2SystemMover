@@ -127,7 +127,6 @@ public class AppDataProvider {
             super.onPreExecute();
         }
 
-
         @Override
         protected void onPostExecute(Void voi) {
             super.onPostExecute(voi);
