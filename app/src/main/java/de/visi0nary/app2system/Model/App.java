@@ -11,13 +11,13 @@ public class App implements Comparable<App> {
     private Drawable icon;
     private String humanReadableName;
     private String installationPath;
-    private boolean isSystemApp;
+    private AppType type;
 
-    public App(Drawable icon, String humanReadableName, String installationPath, boolean isSystemApp) {
+    public App(Drawable icon, String humanReadableName, String installationPath, AppType type) {
         this.icon = icon;
         this.humanReadableName = humanReadableName;
         this.installationPath = installationPath;
-        this.isSystemApp = isSystemApp;
+        this.type = type;
     }
 
 
@@ -29,8 +29,8 @@ public class App implements Comparable<App> {
         return humanReadableName;
     }
 
-    public boolean isSystemApp() {
-        return isSystemApp;
+    public AppType getAppType() {
+        return type;
     }
 
     public String getPath() {

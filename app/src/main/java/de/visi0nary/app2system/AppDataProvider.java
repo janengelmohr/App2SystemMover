@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import de.visi0nary.app2system.Model.App;
+import de.visi0nary.app2system.Model.AppType;
 
 /**
  * Created by visi0nary on 19.05.15.
@@ -27,15 +28,6 @@ public class AppDataProvider {
         this.callingActivity = (MainActivity)callingActivity;
         systemAppList = new ArrayList<>();
         userAppList = new ArrayList<>();
-    }
-
-
-    public ArrayList<App> getSystemAppList() {
-        return systemAppList;
-    }
-
-    public ArrayList<App> getUserAppList() {
-        return userAppList;
     }
 
     public void updateLists() {
@@ -93,17 +85,33 @@ public class AppDataProvider {
                 }
             }).start();
             //iterate through all apps and decide whether they're system or user apps and put them into the corresponding list
-            for (ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
+            for (ApplicationInfo appInfo : pm.getInstalledApplications(PackageManager.GET_META_DATA))
+            {
                 // use human readable app name instead of package name
-                if (isSystemApp(appInfo)) {
-                    systemAppList.add(new App(pm.getApplicationIcon(appInfo),
-                            pm.getApplicationLabel(appInfo).toString(),
-                            appInfo.sourceDir, isSystemApp(appInfo)));
-                    //once all lists are filled update both fragments and deliver fresh lists
-                } else {
+                if (isSystemApp(appInfo))
+                {
+                    App systemApp;
+                    if(appInfo.sourceDir.contains("priv-app"))
+                    {
+                        //the app is really fundamental and thus flagged accordingly
+                        systemApp = new App(pm.getApplicationIcon(appInfo),
+                                pm.getApplicationLabel(appInfo).toString(),
+                                appInfo.sourceDir, AppType.PRIVSYSTEM);
+                    }
+                    else
+                    {
+                        //the app is just a normal system app
+                        systemApp = new App(pm.getApplicationIcon(appInfo),
+                                pm.getApplicationLabel(appInfo).toString(),
+                                appInfo.sourceDir, AppType.SYSTEM);
+                    }
+                    systemAppList.add(systemApp);
+                } else
+                {
+                    //the app is a user app
                     userAppList.add(new App(pm.getApplicationIcon(appInfo),
                             pm.getApplicationLabel(appInfo).toString(),
-                            appInfo.sourceDir, isSystemApp(appInfo)));
+                            appInfo.sourceDir, AppType.USER));
                 }
                 appCount++;
             }

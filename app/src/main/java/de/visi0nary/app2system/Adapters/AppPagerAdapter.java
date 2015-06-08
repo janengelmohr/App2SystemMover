@@ -1,6 +1,5 @@
 package de.visi0nary.app2system.Adapters;
 
-import android.content.pm.ApplicationInfo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;

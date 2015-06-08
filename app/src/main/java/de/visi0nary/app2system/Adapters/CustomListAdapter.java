@@ -12,11 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-//currently using nispok's snackbar implementation in favor of the official because it can hold an onDisposeListener
 import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.listeners.ActionClickListener;
-import com.nispok.snackbar.listeners.EventListener;
 import com.nispok.snackbar.listeners.EventListenerAdapter;
 
 import java.io.BufferedWriter;
@@ -25,7 +23,10 @@ import java.util.ArrayList;
 
 import de.visi0nary.app2system.MainActivity;
 import de.visi0nary.app2system.Model.App;
+import de.visi0nary.app2system.Model.AppType;
 import de.visi0nary.app2system.R;
+
+//currently using nispok's snackbar implementation in favor of the official because it can hold an onDisposeListener
 
 /**
  * Created by visi0nary on 13.05.15.
@@ -90,22 +91,25 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     public void onBindViewHolder(final CustomListAdapter.ViewHolder viewHolder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String name = apps.get(position).getHumanReadableName();
-        final App app = apps.get(position);
-        viewHolder.text.setText(name);
-        viewHolder.icon.setImageDrawable((apps.get(position).getIcon()));
-        viewHolder.getView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (sharedPrefs.getBoolean("pref_batch_mode", false)) {
-                    //if the batch mode is enabled, just move the app
-                    showSnackbar(app, v);
-                } else {
-                    //...otherwise prompt the user with a confirmation popup (default behaviour)
-                    createPopup(app, v);
+        //TODO fix priv-apps
+        if(apps.get(position).getAppType() != AppType.PRIVSYSTEM) {
+            final String name = apps.get(position).getHumanReadableName();
+            final App app = apps.get(position);
+            viewHolder.text.setText(name);
+            viewHolder.icon.setImageDrawable((apps.get(position).getIcon()));
+            viewHolder.getView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (sharedPrefs.getBoolean("pref_batch_mode", false)) {
+                        //if the batch mode is enabled, just move the app
+                        showSnackbar(app, v);
+                    } else {
+                        //...otherwise prompt the user with a confirmation popup (default behaviour)
+                        createPopup(app, v);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -152,10 +156,14 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
             finalCommandBuilder.append(splittedPath[i] + "/");
         }
         String targetPath;
-        if (app.isSystemApp()) {
+        if (app.getAppType() == AppType.SYSTEM) {
             targetPath = pathBuilder.toString().replace("system", "data");
-        } else {
+        } else if(app.getAppType() == AppType.USER){
             targetPath = pathBuilder.toString().replace("data", "system");
+        }
+        else {
+            //TODO; implement correct behaviour (change priv-app to app as well)
+            targetPath = pathBuilder.toString().replace("system", "data");
         }
         finalCommandBuilder.append(" " + targetPath);
         Log.i("Final command", finalCommandBuilder.toString());
@@ -203,7 +211,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
             //these are final because DialogInterface.OnClickListener is an inner class
             final App tempApp = app;
             final View fV = v;
-            int isUserApp = app.isSystemApp() ? 1 : 0;
+            int isUserApp = app.getAppType() == AppType.USER ? 1 : 0;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             switch (isUserApp) {
                 //it's a system app

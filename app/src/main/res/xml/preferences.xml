@@ -28,12 +28,11 @@
         android:summary="@string/pref_description_unsafe_mode"
         android:defaultValue="false" />
 
-   <!-- TODO implement this
     <CheckBoxPreference
         android:key="pref_show_core_apps"
         android:title="@string/pref_core_apps"
         android:summary="@string/pref_description_core"
-        android:defaultValue="false" /> -->
+        android:defaultValue="false" />
 
     </PreferenceCategory>
 
