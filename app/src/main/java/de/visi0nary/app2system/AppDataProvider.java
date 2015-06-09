@@ -91,6 +91,7 @@ public class AppDataProvider {
                 if (isSystemApp(appInfo))
                 {
                     App systemApp;
+                    //TODO find reasonable distinction between system and core apps because the priv-app check is insufficient
                     if(appInfo.sourceDir.contains("priv-app"))
                     {
                         //the app is really fundamental and thus flagged accordingly
