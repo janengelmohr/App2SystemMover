@@ -66,6 +66,17 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
 
     public void refreshItems(ArrayList<App> apps) {
         this.apps = apps;
+        //if show core apps is unticked, remove all apps flagged with AppType.PRIVSYSTEM!
+        if(!sharedPrefs.getBoolean("pref_show_core_apps", false)) {
+            for(int index = 0; index<apps.size();) {
+                if(apps.get(index).getAppType() == AppType.PRIVSYSTEM) {
+                    apps.remove(index);
+                }
+                else {
+                    index++;
+                }
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -91,8 +102,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
     public void onBindViewHolder(final CustomListAdapter.ViewHolder viewHolder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        //TODO fix priv-apps
-        if(sharedPrefs.getBoolean("pref_show_core_apps", false) || apps.get(position).getAppType() != AppType.PRIVSYSTEM) {
             final String name = apps.get(position).getHumanReadableName();
             final App app = apps.get(position);
             viewHolder.text.setText(name);
@@ -109,7 +118,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                     }
                 }
             });
-        }
     }
 
     @Override
