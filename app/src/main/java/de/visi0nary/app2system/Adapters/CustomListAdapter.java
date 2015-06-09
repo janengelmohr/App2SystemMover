@@ -92,7 +92,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //TODO fix priv-apps
-        if(apps.get(position).getAppType() != AppType.PRIVSYSTEM) {
+        if(sharedPrefs.getBoolean("pref_show_core_apps", false) || apps.get(position).getAppType() != AppType.PRIVSYSTEM) {
             final String name = apps.get(position).getHumanReadableName();
             final App app = apps.get(position);
             viewHolder.text.setText(name);

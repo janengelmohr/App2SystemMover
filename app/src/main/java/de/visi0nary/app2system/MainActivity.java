@@ -4,11 +4,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean rootInitialized;
     private AppDataProvider dataProvider;
+
+    public static final int START_SETTINGS_ACTIVITY = 1;
 
     // this flag indicates whether the user has already moved at least one app
     private boolean appsAreDirty = false;
@@ -244,10 +249,19 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, START_SETTINGS_ACTIVITY);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if the settings activity returns and the main activity needs a refresh (i.e. view mode was changed) it is triggered here
+        if((requestCode==START_SETTINGS_ACTIVITY) && (resultCode==RESULT_OK) && data.getBooleanExtra("mainActivityNeedsRefresh", false)) {
+            dataProvider.updateLists();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
