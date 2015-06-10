@@ -22,6 +22,7 @@ public class SettingsActivity extends Activity  {
     }
 
     public void setMainActivityNeedsRefresh(boolean mainActivityNeedsRefresh) {
+        //called when main activiy should be refreshed
         this.mainActivityNeedsRefresh = mainActivityNeedsRefresh;
         Intent intent = getIntent();
         if(mainActivityNeedsRefresh) {

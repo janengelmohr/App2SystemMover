@@ -3,6 +3,6 @@ This app is able to intuitively switch apps from /system to /user and vice versa
 
 TODO:
 
--> implement "dangerous mode" which let's the user move really basic apps (e.g. phone, etc)
+-> enhance "dangerous mode" as the string check for "priv-app" is insufficient
 
 -> implement "ROM mode"
